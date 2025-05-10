@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    <url>
+    <loc>https://techxtrasol.com</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/dashboard</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/about-us</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/our-team</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/consultation</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/our-resources</loc>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/ai-powered-coding</loc>
+    <lastmod>2025-05-04T14:09:53+00:00</lastmod>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/zero-day-exploits</loc>
+    <lastmod>2025-04-29T15:25:34+00:00</lastmod>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/resources/golang-chi-router</loc>
+    <lastmod>2025-04-30T11:11:25+00:00</lastmod>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/resources/python-for-machine-learning-ai</loc>
+    <lastmod>2025-04-30T20:25:42+00:00</lastmod>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/case-studies/enterprise-analytics-dashboard</loc>
+    <lastmod>2025-05-01T18:04:56+00:00</lastmod>
+            </url>
+</urlset>

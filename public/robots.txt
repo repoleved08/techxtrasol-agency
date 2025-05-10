@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /*?*
+Disallow: /*&*
+
+Sitemap: https://techxtrasol.com/sitemap.xml
