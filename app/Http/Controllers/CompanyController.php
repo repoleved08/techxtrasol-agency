@@ -37,82 +37,82 @@ class CompanyController extends Controller
 
     // app/Http/Controllers/CompanyController.php
 
-public function ourTeam()
-{
-    $teamMembers = Team::all();
+    public function ourTeam()
+    {
+        $teamMembers = Team::all();
 
-    $formattedTeam = $teamMembers->map(function ($member) {
-        return [
-            'id' => $member->id,
-            'name' => $member->name,
-            'position' => $member->position,
-            'department' => $member->department,
-            'image_url' => $member->image_url,
-            'bio' => $member->bio,
-            'skills' => $this->formatSkills($member->skills),
-            'socials' => $this->formatSocials($member->socials),
-        ];
-    });
+        $formattedTeam = $teamMembers->map(function ($member) {
+            return [
+                'id' => $member->id,
+                'name' => $member->name,
+                'position' => $member->position,
+                'department' => $member->department,
+                'image_url' => $member->image_url,
+                'bio' => $member->bio,
+                'skills' => $this->formatSkills($member->skills),
+                'socials' => $this->formatSocials($member->socials),
+            ];
+        });
 
-    return inertia('Company/OurTeam', [
-        'team' => $formattedTeam,
-    ]);
-}
-
-protected function formatSkills($skills)
-{
-    // If already properly formatted (from model accessor)
-    if (is_array($skills) && !empty($skills) && is_string($skills[0])) {
-        return $skills;
+        return inertia('Company/OurTeam', [
+            'team' => $formattedTeam,
+        ]);
     }
 
-    // Handle empty case
-    if (empty($skills)) {
-        return ['General']; // Fallback skill
+    protected function formatSkills($skills)
+    {
+        // If already properly formatted (from model accessor)
+        if (is_array($skills) && !empty($skills) && is_string($skills[0])) {
+            return $skills;
+        }
+
+        // Handle empty case
+        if (empty($skills)) {
+            return ['General']; // Fallback skill
+        }
+
+        // Handle JSON string
+        if (is_string($skills)) {
+            $skills = json_decode($skills, true);
+        }
+
+        // Handle array of objects
+        if (is_array($skills) && isset($skills[0]['name'])) {
+            return array_column($skills, 'name');
+        }
+        if (is_array($skills) && isset($skills[0]['skill'])) {
+            return array_column($skills, 'skill');
+        }
+
+        // Handle malformed data
+        return is_array($skills) ? $skills : ['General'];
     }
 
-    // Handle JSON string
-    if (is_string($skills)) {
-        $skills = json_decode($skills, true);
-    }
+    protected function formatSocials($socials)
+    {
+        // If already properly formatted (from model accessor)
+        if (is_array($socials) && !empty($socials) && is_string($socials[0]['platform'])) {
+            return $socials;
+        }
 
-    // Handle array of objects
-    if (is_array($skills) && isset($skills[0]['name'])) {
-        return array_column($skills, 'name');
-    }
-    if (is_array($skills) && isset($skills[0]['skill'])) {
-        return array_column($skills, 'skill');
-    }
+        // Handle empty case
+        if (empty($socials)) {
+            return []; // No socials
+        }
 
-    // Handle malformed data
-    return is_array($skills) ? $skills : ['General'];
-}
+        // Handle JSON string
+        if (is_string($socials)) {
+            $socials = json_decode($socials, true);
+        }
 
-protected function formatSocials($socials)
-{
-    // If already properly formatted (from model accessor)
-    if (is_array($socials) && !empty($socials) && is_string($socials[0]['platform'])) {
-        return $socials;
+        // Handle array of objects
+        if (is_array($socials) && isset($socials[0]['platform'])) {
+            return $socials;
+        }
+
+        // Handle malformed data
+        return is_array($socials) ? $socials : [];
     }
-
-    // Handle empty case
-    if (empty($socials)) {
-        return []; // No socials
-    }
-
-    // Handle JSON string
-    if (is_string($socials)) {
-        $socials = json_decode($socials, true);
-    }
-
-    // Handle array of objects
-    if (is_array($socials) && isset($socials[0]['platform'])) {
-        return $socials;
-    }
-
-    // Handle malformed data
-    return is_array($socials) ? $socials : [];
-}
 
     public function consultation(): Response
     {

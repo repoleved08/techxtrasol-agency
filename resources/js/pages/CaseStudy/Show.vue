@@ -240,8 +240,8 @@
               <p class="text-muted-foreground max-w-2xl mx-auto mb-8">
                 Let's discuss how we can help you achieve your business goals with our custom technology solutions.
               </p>
-              <Link
-                href="/contact"
+              <Button
+                @click="goToContactSection('contact-section')"
                 class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-primary-foreground font-medium relative overflow-hidden group"
               >
                 <span class="relative z-10">Get in Touch</span>
@@ -249,7 +249,7 @@
                 <div
                   class="absolute inset-0 bg-primary-foreground/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
                 ></div>
-              </Link>
+            </Button>
             </div>
           </div>
         </div>
@@ -261,10 +261,12 @@
 </template>
 
 <script setup>
+import { Inertia } from '@inertiajs/inertia';
 import Newsletter from '../Company/Newsletter.vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -283,6 +285,31 @@ const props = defineProps({
     required: true
   }
 });
+
+const scrollToSection = (id) => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
+
+
+const goToContactSection = (sectionId) => {
+  if (window.location.pathname !== '/') {
+    Inertia.visit(`/#${sectionId}`, {
+      preserveScroll: false,
+      onFinish: () => {
+        // Optional: delay ensures DOM is mounted before scroll
+        setTimeout(() => {
+          scrollToSection(sectionId);
+        }, 100); // tweak if needed
+      }
+    });
+  } else {
+    scrollToSection(sectionId);
+  }
+};
+
 
 // Loading state
 const isLoading = ref(true);

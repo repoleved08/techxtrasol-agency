@@ -120,7 +120,7 @@
         </div>
       </div>
 
-     
+
     </div>
   </section>
 </template>
@@ -173,15 +173,6 @@ const isPaused = ref(false);
 // Main Technologies
 const technologies = [
   {
-    id: 1,
-    name: "React",
-    description: "Building interactive user interfaces with reusable components.",
-    logo: reactLogo,
-    category: "frontend",
-    level: "expert",
-    experience: 6
-  },
-  {
     id: 2,
     name: "Vue.js",
     description: "Creating reactive and composable user interfaces.",
@@ -207,15 +198,6 @@ const technologies = [
     category: "backend",
     level: "advanced",
     experience: 6
-  },
-  {
-    id: 5,
-    name: "React Native",
-    description: "Creating native mobile apps using React architecture.",
-    logo: reactLogo,
-    category: "mobile",
-    level: "advanced",
-    experience: 4
   },
   {
     id: 6,

@@ -22,6 +22,9 @@
    <div id="contact-section" class="contact-section">
      <ContactSection />
    </div>
+    <div class="mx-auto mb-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Newsletter />
+    </div>
  </PublicLayout>
 </template>
 
@@ -38,6 +41,7 @@ import BlogInsightSection from './BlogInsightSection.vue';
 import TechnologiesSection from './TechnologiesSection.vue';
 import CTA from './CTA.vue';
 import ContactSection from './ContactSection.vue';
+import Newsletter from './Company/Newsletter.vue';
 import FooterSection from './FooterSection.vue';
 import { computed } from 'vue';
 

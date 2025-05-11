@@ -18,6 +18,7 @@ use App\Models\NewsletterSubscriber;
 use App\Notifications\NewBlogPostNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -81,11 +82,13 @@ class PostResource extends Resource
                                 DateTimePicker::make('published_at')
                                     ->label('Publish Date'),
 
-                                Toggle::make('is_published')
+                                    Toggle::make('is_published')
                                     ->label('Published')
                                     ->default(false)
                                     ->afterStateUpdated(function ($state, $record) {
-                                        if ($state && $record && !$record->wasRecentlyCreated) {
+                                        if ($state && $record) {
+                                            // Remove the wasRecentlyCreated check to allow notifications
+                                            // when publishing existing drafts
                                             self::notifySubscribers($record);
                                         }
                                     }),
@@ -127,15 +130,28 @@ class PostResource extends Resource
 
     protected static function notifySubscribers(Post $post)
     {
+        // Add verification check
+        $subscribers = NewsletterSubscriber::where('is_active', true)
+            ->whereNotNull('verified_at')
+            ->get();
+
+        if ($subscribers->isEmpty()) {
+            Log::info('No active, verified subscribers found');
+            return;
+        }
+
         $recentPosts = Post::where('is_published', true)
             ->where('id', '!=', $post->id)
             ->orderBy('published_at', 'desc')
             ->limit(3)
             ->get();
 
-        $subscribers = NewsletterSubscriber::where('is_active', true)->get();
-
-        Notification::send($subscribers, new NewBlogPostNotification($post, $recentPosts));
+        try {
+            Notification::send($subscribers, new NewBlogPostNotification($post, $recentPosts));
+            Log::info('Notifications sent successfully for post: ' . $post->id);
+        } catch (\Exception $e) {
+            Log::error('Failed to send notifications: ' . $e->getMessage());
+        }
     }
 
     public static function table(Table $table): Table

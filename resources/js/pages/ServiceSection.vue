@@ -104,7 +104,7 @@ import {
 
 // Navigation function
 const goToConsult = () => {
-  window.location.href = '/consultation';
+  window.location.href = '/our-consultation';
 };
 
 // Service data with structured content for SEO
