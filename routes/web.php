@@ -10,6 +10,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\BookController;
 use App\Models\Post;
 
 Route::get('/', function () {
@@ -88,6 +89,11 @@ Route::get('/privacy-policy', [CompanyController::class, 'privacyPolicy'])->name
 // coomments
 Route::middleware('auth')->post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->middleware('auth');
+
+// Books
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
+Route::get('/books/{book:slug}/download', [BookController::class, 'download'])->name('books.download');
 
 
 

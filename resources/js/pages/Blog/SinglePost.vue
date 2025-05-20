@@ -304,7 +304,7 @@
                 Join the Discussion
               </h2>
 
-              
+
             </section>
             <!-- Comments trial-->
             <div class="comments-section mt-12" v-motion :initial="{ opacity: 0, y: 20 }"
@@ -800,6 +800,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { toast, Toaster } from 'vue-sonner';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -929,7 +930,9 @@ const floatingActions = computed(() => [
     icon: HeartIcon,
     action: () => {
       // Implement like functionality
-      alert('Thank you for liking this article!');
+
+      toast.success('Thank you for liking this article!');
+
     }
   },
   {
@@ -1059,7 +1062,7 @@ const shareContent = (platform) => {
 // Copy page URL to clipboard
 const copyPageUrl = () => {
   navigator.clipboard.writeText(window.location.href);
-  alert('Link copied to clipboard!');
+  toast.success('Page URL copied to clipboard!');
 };
 
 // Toggle TOC collapse state

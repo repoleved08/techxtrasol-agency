@@ -99,11 +99,41 @@
           <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
           Resources
         </button>
+        <!-- Resource Dropdown-->
+        <div class="relative">
+          <button
+            class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105"
+            :class="{ 'bg-accent/50': activeDropdown === 'Resources' }" @click="toggleDropdown('Resources')">
+            <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+            Resources
+            <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300"
+              :class="{ 'rotate-180': activeDropdown === 'Resources' }" />
+          </button>
+
+          <Transition enter-active-class="transition-all ease-out duration-300"
+            enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
+            leave-active-class="transition-all ease-in duration-200"
+            leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+            <div v-if="activeDropdown === 'Resources'"
+              class="absolute left-0 mt-2 w-64 rounded-md border bg-popover p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
+              @mouseleave="closeDropdownDelayed">
+              <div class="grid gap-2">
+                <Link v-for="(subItem, index) in getSubItems('Resources')" :key="subItem.label"
+                  :href="subItem.href || '#'"
+                  class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4"
+                  :style="{ transitionDelay: `${index * 30}ms` }">
+                <component :is="subItem.icon" class="mr-3 h-4 w-4 transition-transform duration-300 hover:rotate-12" />
+                {{ subItem.label }}
+                </Link>
+              </div>
+            </div>
+          </Transition>
+        </div>
         <!-- Blog  Link -->
         <Link href="/agency/blog"
           class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
-          <FileTextIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-          Blog
+        <FileTextIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+        Blog
         </Link>
 
       </nav>
@@ -326,6 +356,39 @@
               </div>
             </button>
           </div>
+          <!-- Resources dropdown-->
+          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
+            <button
+              class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
+              @click="toggleMobileSubmenu('Resources')">
+              <div class="flex items-center">
+                <BookOpenIcon class="mr-3 h-5 w-5 transition-transform duration-300"
+                  :class="{ 'rotate-12': mobileActiveSubmenu === 'Resources' }" />
+                Resources
+              </div>
+              <ChevronDownIcon class="h-5 w-5 transition-transform duration-300"
+                :class="{ 'rotate-180': mobileActiveSubmenu === 'Resources' }" />
+            </button>
+
+            <Transition enter-active-class="transition-all duration-500 ease-out" enter-from-class="max-h-0 opacity-0"
+              enter-to-class="max-h-[500px] opacity-100" leave-active-class="transition-all duration-300 ease-in"
+              leave-from-class="max-h-[500px] opacity-100" leave-to-class="max-h-0 opacity-0">
+              <div v-if="mobileActiveSubmenu === 'Resources'"
+                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2">
+                <div class="py-2 space-y-1 max-h-[300px] overflow-y-auto scrollbar-thin">
+                  <Link v-for="(subItem, subIndex) in getSubItems('Resources')" :key="subItem.label"
+                    :href="subItem.href || '#'"
+                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6"
+                    :style="{ animationDelay: `${subIndex * 50}ms` }" :class="['animate-fadeIn']">
+                  <component :is="subItem.icon"
+                    class="mr-3 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                  {{ subItem.label }}
+                  </Link>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
           <!-- Blog - Mobile -->
           <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 250ms;">
             <Link href="/agency/blog"
@@ -584,6 +647,15 @@ const navItems = [
       { label: 'Healthcare', icon: HeartPulseIcon, href: '/solutions/healthcare' },
       { label: 'Education', icon: GraduationCapIcon, href: '/solutions/education' }
     ]
+  },
+  {
+    label: 'Resources',
+    icon: BookOpenIcon,
+    subItems: [
+      { label: 'Resources', icon: CodeIcon, href: '/our-resources' },
+      { label: 'E-books', icon: FileTextIcon, href: '/books' }
+    ]
+
   },
   // {
   //   label: 'Digital Marketing',
