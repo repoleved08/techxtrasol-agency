@@ -99,7 +99,7 @@ class ResourceController extends Controller
             'twitter_site' => '@techxtrasol',
             'twitter_creator' => $resource->user->twitter_handle ?? '@techxtrasol',
             'category' => $resource->category->name ?? null,
-           
+
         ];
 
         return Inertia::render('Resources/Show', [

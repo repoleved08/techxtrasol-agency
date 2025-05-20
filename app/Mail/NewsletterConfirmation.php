@@ -11,30 +11,30 @@ use Illuminate\Queue\SerializesModels;
 
 class NewsletterConfirmation extends Mailable
 {
-    use Queueable, SerializesModels;
+  use Queueable, SerializesModels;
 
-    public $subscriber;
+  public $subscriber;
 
-    public function __construct(NewsletterSubscriber $subscriber)
-    {
-        $this->subscriber = $subscriber;
-    }
+  public function __construct(NewsletterSubscriber $subscriber)
+  {
+    $this->subscriber = $subscriber;
+  }
 
-    public function envelope()
-    {
-        return new Envelope(
-            subject: 'Confirm Your Newsletter Subscription',
-        );
-    }
+  public function envelope()
+  {
+    return new Envelope(
+      subject: 'Confirm Your Newsletter Subscription',
+    );
+  }
 
-    public function content()
-    {
-        return new Content(
-            markdown: 'emails.newsletter.confirmation',
-            with: [
-                'url' => route('newsletter.confirm', $this->subscriber->token),
-                'unsubscribeUrl' => route('newsletter.unsubscribe', $this->subscriber->email)
-            ]
-        );
-    }
+  public function content()
+  {
+    return new Content(
+      markdown: 'emails.newsletter.confirmation',
+      with: [
+        'url' => route('newsletter.confirm', $this->subscriber->token),
+        'unsubscribeUrl' => route('newsletter.unsubscribe', $this->subscriber->email)
+      ]
+    );
+  }
 }

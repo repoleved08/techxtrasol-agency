@@ -2,43 +2,131 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
     <loc>https://techxtrasol.com</loc>
-            </url>
-    <url>
-    <loc>https://techxtrasol.com/dashboard</loc>
+    <lastmod>2025-05-19T22:14:15+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/about-us</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/agency/our-team</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/agency/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/agency/consultation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/our-resources</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/our-consultation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/terms-of-service</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/privacy-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/agency/blog/ai-powered-coding</loc>
     <lastmod>2025-05-04T14:09:53+00:00</lastmod>
+    <priority>0.9</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/agency/blog/zero-day-exploits</loc>
-    <lastmod>2025-04-29T15:25:34+00:00</lastmod>
+    <lastmod>2025-05-08T16:19:19+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/zero-day-exploits-the-invisible-cybersecurity-threat</loc>
+    <lastmod>2025-05-06T21:20:28+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/10-ways-to-use-ai-tools-like-chatgpt-to-save-time-and-work-smarter-in-2025</loc>
+    <lastmod>2025-05-11T12:40:55+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/the-5-most-dangerous-cyber-threats-in-2025-and-how-to-protect-yourself</loc>
+    <lastmod>2025-05-11T13:18:09+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/the-7-highest-paying-tech-jobs-in-2025-no-degree-required</loc>
+    <lastmod>2025-05-11T15:34:01+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/which-linux-distro-is-best-for-your-old-computer-2025-edition</loc>
+    <lastmod>2025-05-11T19:37:20+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/top-10-sites-to-monetize-your-content-in-2025-ranked-reviewed</loc>
+    <lastmod>2025-05-12T19:09:09+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/is-ai-replacing-developers-heres-what-you-should-know</loc>
+    <lastmod>2025-05-13T20:39:47+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/how-to-build-a-personal-brand-as-a-developer-in-2025</loc>
+    <lastmod>2025-05-14T20:38:33+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/tech-career-switching-in-2025-from-non-tech-to-developer-real-paths-that-work</loc>
+    <lastmod>2025-05-15T15:25:57+00:00</lastmod>
+    <priority>0.9</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/agency/blog/from-chatbots-to-ai-agents-the-evolution-you-cant-ignore</loc>
+    <lastmod>2025-05-16T09:53:21+00:00</lastmod>
+    <priority>0.9</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/resources/golang-chi-router</loc>
     <lastmod>2025-04-30T11:11:25+00:00</lastmod>
+    <priority>0.7</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/resources/python-for-machine-learning-ai</loc>
     <lastmod>2025-04-30T20:25:42+00:00</lastmod>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://techxtrasol.com/resources/the-real-world-use-cases-of-go-golang-in-2025-why-developers-still-love-it</loc>
+    <lastmod>2025-05-13T20:14:42+00:00</lastmod>
+    <priority>0.7</priority>
             </url>
     <url>
     <loc>https://techxtrasol.com/case-studies/enterprise-analytics-dashboard</loc>
-    <lastmod>2025-05-01T18:04:56+00:00</lastmod>
-            </url>
+    <lastmod>2025-05-14T20:57:59+00:00</lastmod>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>https://techxtrasol.com/storage/case-studies/featured/01JV89E0RZX5K3M3X5BNXGH8SK.jpg</image:loc>
+</image:image>
+        </url>
 </urlset>
