@@ -94,11 +94,11 @@
         </div>
         <!--  Resources -->
         <!-- Resources - No dropdown, scroll to blog section -->
-        <button @click="handleSectionClick('blog-section')"
+        <!-- <button @click="handleSectionClick('blog-section')"
           class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
           <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
           Resources
-        </button>
+        </button> -->
         <!-- Resource Dropdown-->
         <div class="relative">
           <button
@@ -151,19 +151,18 @@
         </button>
 
         <!-- Admin Panel Link -->
-        <div v-if="canViewAdmin">
-          <Link href="/admin"
-            class="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 overflow-hidden h-10 px-4 py-2 shadow-md transition-all duration-300 hover:scale-105">
-          <span class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500"></span>
-          <span
-            class="absolute inset-0 bg-gradient-to-r from-amber-600 to-orange-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-          <span class="relative flex items-center text-white z-10">
-            <BuildingIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-            <span class="tracking-wide">Admin</span>
-            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
-          </span>
-          </Link>
-        </div>
+       <div v-if="canViewAdmin">
+  <Link href="/admin"
+    class="group relative inline-flex items-center justify-center overflow-hidden rounded-full h-9 px-4 transition-all duration-300 hover:scale-[1.02]">
+    <span class="absolute inset-0 bg-gradient-to-br from-pink-200 to-pink-300 opacity-90"></span>
+    <span class="absolute inset-0 bg-gradient-to-br from-pink-300 to-pink-400 opacity-0 transition-opacity duration-300 group-hover:opacity-90"></span>
+    <span class="relative flex items-center text-pink-700 z-10">
+      <BuildingIcon class="mr-2 h-3.5 w-3.5 transition-transform duration-500 group-hover:scale-125" />
+      <span class="text-[0.9rem] font-medium tracking-tight">Admin</span>
+      <span class="ml-1.5 h-1.5 w-1.5 rounded-full bg-pink-500 animate-pulse"></span>
+    </span>
+  </Link>
+</div>
 
         <!-- User dropdown or login links -->
         <div v-if="auth.user">
@@ -346,7 +345,7 @@
             </Transition>
           </div>
           <!-- Resources - Mobile -->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
+          <!-- <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
             <button
               class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               @click="handleMobileSectionClick('blog-section')">
@@ -355,7 +354,7 @@
                 Resources
               </div>
             </button>
-          </div>
+          </div> -->
           <!-- Resources dropdown-->
           <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
             <button
@@ -653,7 +652,7 @@ const navItems = [
     icon: BookOpenIcon,
     subItems: [
       { label: 'Resources', icon: CodeIcon, href: '/our-resources' },
-      { label: 'E-books', icon: FileTextIcon, href: '/books' }
+      { label: 'E-books & Articles', icon: FileTextIcon, href: '/books' }
     ]
 
   },

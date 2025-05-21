@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class NewsletterSubscriber extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'email',
@@ -36,5 +37,10 @@ class NewsletterSubscriber extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->email;
     }
 }

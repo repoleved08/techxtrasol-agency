@@ -1,5 +1,18 @@
 <template>
   <PublicLayout>
+
+    <Head>
+      <title>{{ book.title }} - Book Details</title>
+      <meta name="description" :content="book.description" />
+      <meta property="og:title" :content="book.title" />
+      <meta property="og:description" :content="book.description" />
+      <meta property="og:image" :content="`/storage/${book.cover_image}`" />
+      <meta property="og:image:alt" :content="book.title" />
+      <meta property="og:url" :content="currentUrl" />
+      <meta property="og:type" content="website" />
+
+    </Head>
+
     <div class="container mx-auto px-4 py-12">
       <div class="max-w-5xl mx-auto" v-motion :initial="{ opacity: 0, y: 50 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 600 } }">
@@ -216,10 +229,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { toast, Toaster } from 'vue-sonner';
+import { Head } from '@inertiajs/vue3';
 //import { vMotion, vMotionSlideVisible } from '@vueuse/motion';
 import {
   Bookmark, Calendar, ChevronLeft, ChevronRight, Copy, Download, Facebook,
@@ -247,23 +261,27 @@ const downloadBook = () => {
   window.location.href = `/books/${props.book.slug}/download`;
 };
 
-const copyToClipboard = () => {
-  const url = window.location.href;
-  navigator.clipboard.writeText(url)
-    .then(() => {
-      toast.success('Link copied to clipboard!', {
-        description: 'Share this book with others',
-        action: {
-          label: 'View',
-          onClick: () => window.open(url, '_blank')
-        },
-      });
-    })
-    .catch(() => {
-      toast.error('Failed to copy link', {
-        description: 'Please try again',
-      });
+const currentUrl = ref('');
+
+onMounted(() => {
+  currentUrl.value = window.location.href;
+});
+
+const copyToClipboard = async () => {
+  try {
+    await navigator.clipboard.writeText(currentUrl.value);
+    toast.success('Link copied!', {
+      description: 'Share this book with others',
+      action: {
+        label: 'Open',
+        onClick: () => window.open(currentUrl.value, '_blank')
+      },
     });
+  } catch (err) {
+    toast.error('Failed to copy', {
+      description: 'Please try again',
+    });
+  }
 };
 
 const shareViaTwitter = () => {
