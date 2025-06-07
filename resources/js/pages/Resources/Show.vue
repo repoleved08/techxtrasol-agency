@@ -1,68 +1,59 @@
 <template>
-   <Head>
-      <!-- Primary Meta Tags -->
-      <title>{{ meta.title }} | TechXtraSol Resources</title>
-      <meta name="title" :content="meta.title">
-      <meta name="description" :content="meta.description">
-      <meta name="author" :content="meta.author">
-      <meta name="keywords" :content="meta.tags ? meta.tags.join(', ') : ''">
+<PublicLayout>
+  <Head>
+    <!-- Primary Meta Tags -->
+    <title>{{ meta.title }} | TechXtraSol Resources</title>
+    <meta name="title" :content="meta.title">
+    <meta name="description" :content="meta.description">
+    <meta name="author" :content="meta.author">
+    <meta name="keywords" :content="meta.tags ? meta.tags.join(', ') : ''">
 
-      <!-- Open Graph / Facebook -->
-      <meta property="og:type" :content="meta.type">
-      <meta property="og:url" :content="meta.url">
-      <meta property="og:title" :content="meta.title">
-      <meta property="og:description" :content="meta.description">
-      <meta property="og:image" :content="meta.image">
-      <meta property="og:image:width" content="1200">
-      <meta property="og:image:height" content="630">
-      <meta property="og:site_name" :content="meta.site_name">
-      <meta property="article:published_time" :content="meta.published_time">
-      <meta property="article:modified_time" :content="meta.modified_time">
-      <meta property="article:author" :content="meta.author">
-      <meta property="article:section" :content="meta.category">
-      <meta v-for="tag in meta.tags" :key="tag" property="article:tag" :content="tag">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" :content="meta.type">
+    <meta property="og:url" :content="meta.url">
+    <meta property="og:title" :content="meta.title">
+    <meta property="og:description" :content="meta.description">
+    <meta property="og:image" :content="meta.image">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" :content="meta.site_name">
+    <meta property="article:published_time" :content="meta.published_time">
+    <meta property="article:modified_time" :content="meta.modified_time">
+    <meta property="article:author" :content="meta.author">
+    <meta property="article:section" :content="meta.category">
+    <meta v-for="tag in meta.tags" :key="tag" property="article:tag" :content="tag">
 
-      <!-- Twitter -->
-      <meta name="twitter:card" :content="meta.twitter_card">
-      <meta name="twitter:site" :content="meta.twitter_site">
-      <meta name="twitter:creator" :content="meta.twitter_creator">
-      <meta name="twitter:title" :content="meta.title">
-      <meta name="twitter:description" :content="meta.description">
-      <meta name="twitter:image" :content="meta.image">
-      <meta name="twitter:label1" content="Written by">
-      <meta name="twitter:data1" :content="meta.author">
-      <meta name="twitter:label2" content="Category">
-      <meta name="twitter:data2" :content="meta.category">
+    <!-- Twitter -->
+    <meta name="twitter:card" :content="meta.twitter_card">
+    <meta name="twitter:site" :content="meta.twitter_site">
+    <meta name="twitter:creator" :content="meta.twitter_creator">
+    <meta name="twitter:title" :content="meta.title">
+    <meta name="twitter:description" :content="meta.description">
+    <meta name="twitter:image" :content="meta.image">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" :content="meta.author">
+    <meta name="twitter:label2" content="Category">
+    <meta name="twitter:data2" :content="meta.category">
 
-      <!-- Canonical URL -->
-      <link rel="canonical" :href="meta.url">
+    <!-- Canonical URL -->
+    <link rel="canonical" :href="meta.url">
 
 
-    </Head>
+  </Head>
 
   <!-- Reading Progress Bar -->
-  <div
-    class="fixed top-0 left-0 w-full h-1.5 bg-muted z-50"
-    v-motion
-    :initial="{ opacity: 0 }"
-    :enter="{ opacity: 1, transition: { delay: 300 } }"
-  >
-    <div
-      class="h-full bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-200 ease-out"
-      :style="{ width: `${readingProgress}%` }"
-      :class="{ 'reading-progress-complete': readingProgress >= 98 }"
-    ></div>
+  <div class="fixed top-0 left-0 w-full h-1.5 bg-muted z-50" v-motion :initial="{ opacity: 0 }"
+    :enter="{ opacity: 1, transition: { delay: 300 } }">
+    <div class="h-full bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-200 ease-out"
+      :style="{ width: `${readingProgress}%` }" :class="{ 'reading-progress-complete': readingProgress >= 98 }"></div>
   </div>
 
   <!-- Theme Toggle -->
   <div class="fixed top-20 right-4 z-40">
-    <button
-      @click="toggleDarkMode"
+    <button @click="toggleDarkMode"
       class="p-3 rounded-full bg-card border border-border shadow-lg text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-110"
-      v-motion
-      :initial="{ opacity: 0, scale: 0.8, rotate: -15 }"
-      :enter="{ opacity: 1, scale: 1, rotate: 0, transition: { type: 'spring', stiffness: 200, damping: 15, delay: 800 } }"
-    >
+      v-motion :initial="{ opacity: 0, scale: 0.8, rotate: -15 }"
+      :enter="{ opacity: 1, scale: 1, rotate: 0, transition: { type: 'spring', stiffness: 200, damping: 15, delay: 800 } }">
       <Sun v-if="isDarkMode" class="w-5 h-5" />
       <Moon v-else class="w-5 h-5" />
     </button>
@@ -70,14 +61,11 @@
 
   <!-- Back Button -->
   <div class="container mx-auto px-4 pt-6">
-    <button
-      @click="goBack"
-      class="inline-flex items-center text-muted-foreground hover:text-primary transition-colors group"
-      v-motion
-      :initial="{ opacity: 0, x: -20 }"
-      :enter="{ opacity: 1, x: 0, transition: { duration: 500 } }"
-    >
-      <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center mr-2 group-hover:bg-primary/10 transition-colors">
+    <button @click="goBack"
+      class="inline-flex items-center text-muted-foreground hover:text-primary transition-colors group" v-motion
+      :initial="{ opacity: 0, x: -20 }" :enter="{ opacity: 1, x: 0, transition: { duration: 500 } }">
+      <div
+        class="w-8 h-8 rounded-full bg-muted flex items-center justify-center mr-2 group-hover:bg-primary/10 transition-colors">
         <ArrowLeftIcon class="w-4 h-4 group-hover:translate-x-[-2px] transition-transform" />
       </div>
       <span>Back to Resources</span>
@@ -85,42 +73,27 @@
   </div>
 
   <!-- Hero Section -->
-  <div
-    class="relative w-full bg-gradient-to-b from-primary/5 to-background pt-8 pb-8 md:pt-16 md:pb-12 overflow-hidden"
-    v-motion
-    :initial="{ opacity: 0 }"
-    :enter="{ opacity: 1, transition: { duration: 800 } }"
-  >
+  <div class="relative w-full bg-gradient-to-b from-primary/5 to-background pt-8 pb-8 md:pt-16 md:pb-12 overflow-hidden"
+    v-motion :initial="{ opacity: 0 }" :enter="{ opacity: 1, transition: { duration: 800 } }">
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">
         <!-- Category Badge -->
-        <div
-          v-motion
-          :initial="{ opacity: 0, y: 20 }"
-          :enter="{ opacity: 1, y: 0, transition: { delay: 200, duration: 500 } }"
-        >
+        <div v-motion :initial="{ opacity: 0, y: 20 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 200, duration: 500 } }">
           <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">
             {{ resource.category.name }}
           </span>
         </div>
 
         <!-- Title -->
-        <h1
-          class="text-3xl md:text-5xl font-bold mt-4 mb-4 leading-tight"
-          v-motion
-          :initial="{ opacity: 0, y: 20 }"
-          :enter="{ opacity: 1, y: 0, transition: { delay: 300, duration: 500 } }"
-        >
+        <h1 class="text-3xl md:text-5xl font-bold mt-4 mb-4 leading-tight" v-motion :initial="{ opacity: 0, y: 20 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 300, duration: 500 } }">
           {{ resource.title }}
         </h1>
 
         <!-- Meta Information -->
-        <div
-          class="flex flex-wrap items-center text-muted-foreground text-sm mb-6 gap-4"
-          v-motion
-          :initial="{ opacity: 0, y: 20 }"
-          :enter="{ opacity: 1, y: 0, transition: { delay: 400, duration: 500 } }"
-        >
+        <div class="flex flex-wrap items-center text-muted-foreground text-sm mb-6 gap-4" v-motion
+          :initial="{ opacity: 0, y: 20 }" :enter="{ opacity: 1, y: 0, transition: { delay: 400, duration: 500 } }">
           <div class="flex items-center">
             <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
               <UserIcon class="h-4 w-4 text-primary" />
@@ -145,31 +118,23 @@
 
     <!-- Animated background elements -->
     <div class="absolute top-0 right-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-      <div
-        v-for="i in 8"
-        :key="i"
-        class="absolute bg-primary rounded-full blur-xl"
-        :style="{
-          width: `${30 + i * 15}px`,
-          height: `${30 + i * 15}px`,
-          top: `${Math.random() * 100}%`,
-          right: `${Math.random() * 100}%`,
-          opacity: 0.3 + (Math.random() * 0.4)
-        }"
-        v-motion
-        :initial="{ opacity: 0.3 }"
-        :enter="{
-          opacity: [0.3, 0.7, 0.3],
-          y: [0, -80, 0],
-          x: [0, i % 2 === 0 ? 30 : -30, 0],
-          transition: {
-            repeat: Infinity,
-            duration: 8000 + (i * 1000),
-            delay: i * 500,
-            ease: 'easeInOut'
-          }
-        }"
-      ></div>
+      <div v-for="i in 8" :key="i" class="absolute bg-primary rounded-full blur-xl" :style="{
+        width: `${30 + i * 15}px`,
+        height: `${30 + i * 15}px`,
+        top: `${Math.random() * 100}%`,
+        right: `${Math.random() * 100}%`,
+        opacity: 0.3 + (Math.random() * 0.4)
+      }" v-motion :initial="{ opacity: 0.3 }" :enter="{
+        opacity: [0.3, 0.7, 0.3],
+        y: [0, -80, 0],
+        x: [0, i % 2 === 0 ? 30 : -30, 0],
+        transition: {
+          repeat: Infinity,
+          duration: 8000 + (i * 1000),
+          delay: i * 500,
+          ease: 'easeInOut'
+        }
+      }"></div>
     </div>
   </div>
 
@@ -178,34 +143,21 @@
     <div class="max-w-4xl mx-auto">
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Table of Contents (for desktop) -->
-        <div
-          class="hidden md:block w-72 shrink-0 relative"
-          v-if="tableOfContents.length > 0"
-          v-motion
-          :initial="{ opacity: 0, x: -20 }"
-          :enter="{ opacity: 1, x: 0, transition: { delay: 500, duration: 500 } }"
-        >
+        <div class="hidden md:block w-72 shrink-0 relative" v-if="tableOfContents.length > 0" v-motion
+          :initial="{ opacity: 0, x: -20 }" :enter="{ opacity: 1, x: 0, transition: { delay: 500, duration: 500 } }">
           <div class="sticky top-24 p-6 bg-card rounded-xl border border-border shadow-sm">
             <h3 class="text-base font-semibold mb-4 flex items-center">
               <ListIcon class="w-4 h-4 mr-2 text-primary" />
               Table of Contents
             </h3>
             <ul class="space-y-3 text-sm pl-2">
-              <li
-                v-for="(item, index) in tableOfContents"
-                :key="index"
-                class="relative"
-              >
-                <a
-                  :href="`#heading-${index}`"
+              <li v-for="(item, index) in tableOfContents" :key="index" class="relative">
+                <a :href="`#heading-${index}`"
                   class="text-muted-foreground hover:text-primary transition-colors line-clamp-1 pl-4 py-1 block hover:bg-primary/5 rounded-md"
                   :class="{ 'text-primary font-medium': activeHeading === `heading-${index}` }"
-                  @click.prevent="scrollToHeading(`heading-${index}`)"
-                >
-                  <div
-                    class="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/30"
-                    :class="{ 'bg-primary': activeHeading === `heading-${index}` }"
-                  ></div>
+                  @click.prevent="scrollToHeading(`heading-${index}`)">
+                  <div class="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/30"
+                    :class="{ 'bg-primary': activeHeading === `heading-${index}` }"></div>
                   {{ item }}
                 </a>
               </li>
@@ -216,81 +168,46 @@
         <!-- Article Content -->
         <div class="flex-1">
           <!-- Featured Image -->
-          <div
-            v-if="resource.featured_image"
-            class="mb-8 rounded-xl overflow-hidden shadow-lg"
-            v-motion
+          <div v-if="resource.featured_image" class="mb-8 rounded-xl overflow-hidden shadow-lg" v-motion
             :initial="{ opacity: 0, scale: 0.95 }"
-            :enter="{ opacity: 1, scale: 1, transition: { delay: 500, duration: 800 } }"
-          >
-            <img
-              :src="resource.featured_image_url"
-              :alt="resource.title"
-              class="w-full object-cover h-[300px] md:h-[400px]"
-            />
+            :enter="{ opacity: 1, scale: 1, transition: { delay: 500, duration: 800 } }">
+            <img :src="resource.featured_image_url" :alt="resource.title"
+              class="w-full object-cover h-[300px] md:h-[400px]" />
           </div>
 
           <!-- Social Sharing (Top) -->
-          <div
-            class="flex justify-end mb-6 space-x-2"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { delay: 600, duration: 500 } }"
-          >
-            <button
-              v-for="(social, index) in socialSharing"
-              :key="index"
+          <div class="flex justify-end mb-6 space-x-2" v-motion :initial="{ opacity: 0, y: 20 }"
+            :enter="{ opacity: 1, y: 0, transition: { delay: 600, duration: 500 } }">
+            <button v-for="(social, index) in socialSharing" :key="index"
               class="p-2 rounded-full bg-muted hover:bg-primary/10 hover:text-primary transition-colors"
-              @click="shareTo(social.name)"
-              v-motion
-              :initial="{ scale: 1 }"
-              :hover="{ scale: 1.1 }"
-              :title="`Share on ${social.name.charAt(0).toUpperCase() + social.name.slice(1)}`"
-            >
+              @click="shareTo(social.name)" v-motion :initial="{ scale: 1 }" :hover="{ scale: 1.1 }"
+              :title="`Share on ${social.name.charAt(0).toUpperCase() + social.name.slice(1)}`">
               <component :is="social.icon" class="w-4 h-4" />
             </button>
           </div>
 
           <!-- Article Body -->
-          <div
-            class="article-content"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { delay: 700, duration: 500 } }"
-            ref="contentRef"
-          >
+          <div class="article-content" v-motion :initial="{ opacity: 0, y: 20 }"
+            :enter="{ opacity: 1, y: 0, transition: { delay: 700, duration: 500 } }" ref="contentRef">
             <div class="prose prose-lg dark:prose-invert max-w-none" v-html="processedContent"></div>
           </div>
 
           <!-- Tags -->
-          <div
-            v-if="resource.tags && resource.tags.length"
-            class="mt-8 flex flex-wrap gap-2"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { delay: 800, duration: 500 } }"
-          >
-            <span
-              v-for="tag in resource.tags"
-              :key="tag.id"
+          <div v-if="resource.tags && resource.tags.length" class="mt-8 flex flex-wrap gap-2" v-motion
+            :initial="{ opacity: 0, y: 20 }" :enter="{ opacity: 1, y: 0, transition: { delay: 800, duration: 500 } }">
+            <span v-for="tag in resource.tags" :key="tag.id"
               class="px-3 py-1.5 bg-secondary text-secondary-foreground text-sm rounded-full hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
-              v-motion
-              :initial="{ scale: 1 }"
-              :hover="{ scale: 1.05 }"
-            >
+              v-motion :initial="{ scale: 1 }" :hover="{ scale: 1.05 }">
               #{{ tag.name }}
             </span>
           </div>
 
           <!-- Author Bio -->
-          <div
-            class="mt-12 p-6 bg-card rounded-xl border border-border shadow-sm"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { delay: 900, duration: 500 } }"
-          >
+          <div class="mt-12 p-6 bg-card rounded-xl border border-border shadow-sm" v-motion
+            :initial="{ opacity: 0, y: 20 }" :enter="{ opacity: 1, y: 0, transition: { delay: 900, duration: 500 } }">
             <div class="flex items-start gap-4">
-              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
                 <UserIcon class="h-8 w-8 text-primary-foreground" />
               </div>
               <div>
@@ -299,14 +216,13 @@
                   {{ resource.user.bio || 'Content creator at TechXtraSol' }}
                 </p>
                 <div class="mt-3 flex gap-2">
-                  <button class="inline-flex items-center px-3 py-1 text-xs bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-colors">
-                    <UserPlusIcon class="w-3 h-3 mr-1" />
-                    Follow
-                  </button>
-                  <button class="inline-flex items-center px-3 py-1 text-xs bg-secondary text-secondary-foreground rounded-full hover:bg-secondary/80 transition-colors">
-                    <MailIcon class="w-3 h-3 mr-1" />
-                    Contact
-                  </button>
+
+
+                  <a class="inline-flex items-center px-3 py-1 text-xs bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
+                    href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=norman-bii-87382722a"
+                    target="_blank">
+                    <UserPlusIcon class="w-3 h-3 mr-1" />Follow on LinkedIn
+                  </a>
                 </div>
               </div>
             </div>
@@ -315,51 +231,31 @@
       </div>
 
       <!-- Floating Social Share Bar -->
-      <div
-        class="fixed left-4 top-1/2 transform -translate-y-1/2 hidden lg:flex flex-col gap-3 z-40"
-        v-motion
-        :initial="{ opacity: 0, x: -20 }"
-        :enter="{ opacity: 1, x: 0, transition: { delay: 1000, duration: 500 } }"
-      >
-        <button
-          v-for="(social, index) in socialSharing"
-          :key="index"
+      <div class="fixed left-4 top-1/2 transform -translate-y-1/2 hidden lg:flex flex-col gap-3 z-40" v-motion
+        :initial="{ opacity: 0, x: -20 }" :enter="{ opacity: 1, x: 0, transition: { delay: 1000, duration: 500 } }">
+        <button v-for="(social, index) in socialSharing" :key="index"
           class="p-3 rounded-full bg-card shadow-md hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-          @click="shareTo(social.name)"
-          v-motion
-          :initial="{ scale: 1 }"
-          :hover="{ scale: 1.1, y: -5 }"
-          :title="`Share on ${social.name.charAt(0).toUpperCase() + social.name.slice(1)}`"
-        >
+          @click="shareTo(social.name)" v-motion :initial="{ scale: 1 }" :hover="{ scale: 1.1, y: -5 }"
+          :title="`Share on ${social.name.charAt(0).toUpperCase() + social.name.slice(1)}`">
           <component :is="social.icon" class="w-5 h-5" />
         </button>
       </div>
 
       <!-- Next Article Navigation -->
-      <div
-        v-if="nextResource"
-        class="mt-16 pt-8 border-t border-border"
-        v-motion
-        :initial="{ opacity: 0, y: 20 }"
-        :enter="{ opacity: 1, y: 0, transition: { delay: 1000, duration: 500 } }"
-      >
+      <div v-if="nextResource" class="mt-16 pt-8 border-t border-border" v-motion :initial="{ opacity: 0, y: 20 }"
+        :enter="{ opacity: 1, y: 0, transition: { delay: 1000, duration: 500 } }">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">Continue Reading</h3>
           <a href="/resources" class="text-primary text-sm hover:underline">View All Resources</a>
         </div>
 
-        <a
-          :href="`/resources/${nextResource.slug}`"
-          class="block group"
-        >
-          <div class="bg-card hover:bg-card/80 border border-border rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
+        <a :href="`/resources/${nextResource.slug}`" class="block group">
+          <div
+            class="bg-card hover:bg-card/80 border border-border rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
             <div class="md:flex">
               <div class="md:w-1/3 aspect-video md:aspect-auto overflow-hidden">
-                <img
-                  :src="nextResource.featured_image_url"
-                  :alt="nextResource.title"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                <img :src="nextResource.featured_image_url" :alt="nextResource.title"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
               <div class="p-6 md:w-2/3">
                 <div class="flex items-center mb-2">
@@ -386,97 +282,60 @@
       </div>
 
       <!-- Recently Published Resources -->
-      <div
-        v-if="recentResources && recentResources.length"
-        class="mt-16 pt-12 border-t border-border"
-        v-motion
-        :initial="{ opacity: 0, y: 40 }"
-        :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-      >
+      <div v-if="recentResources && recentResources.length" class="mt-16 pt-12 border-t border-border" v-motion
+        :initial="{ opacity: 0, y: 40 }" :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }">
         <h2 class="text-2xl font-bold mb-8 flex items-center">
           <SparklesIcon class="w-5 h-5 mr-2 text-primary" />
           Recently Published
         </h2>
         <div class="grid md:grid-cols-3 gap-6">
-          <ResourceCard
-            v-for="(item, index) in recentResources"
-            :key="item.id"
-            :resource="item"
-            :index="index"
-          />
+          <ResourceCard v-for="(item, index) in recentResources" :key="item.id" :resource="item" :index="index" />
         </div>
       </div>
 
       <!-- Related Resources -->
-      <div
-        v-if="related && related.length"
-        class="mt-16 pt-12 border-t border-border"
-        v-motion
-        :initial="{ opacity: 0, y: 40 }"
-        :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-      >
+      <div v-if="related && related.length" class="mt-16 pt-12 border-t border-border" v-motion
+        :initial="{ opacity: 0, y: 40 }" :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }">
         <h2 class="text-2xl font-bold mb-8 flex items-center">
           <LinkIcon class="w-5 h-5 mr-2 text-primary" />
           Related Resources
         </h2>
         <div class="grid md:grid-cols-3 gap-6">
-          <ResourceCard
-            v-for="(item, index) in related"
-            :key="item.id"
-            :resource="item"
-            :index="index"
-          />
+          <ResourceCard v-for="(item, index) in related" :key="item.id" :resource="item" :index="index" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Enhanced Footer -->
-  <ResourceFooter />
+
+
 
   <!-- Back to top button -->
-  <button
-    v-show="showBackToTop"
-    @click="scrollToTop"
+  <button v-show="showBackToTop" @click="scrollToTop"
     class="fixed bottom-6 right-6 p-3 rounded-full bg-primary text-primary-foreground shadow-lg z-50 transition-all"
-    v-motion
-    :initial="{ scale: 0.8, opacity: 0 }"
-    :enter="{ scale: 1, opacity: 1, transition: { duration: 300 } }"
-    :leave="{ scale: 0.8, opacity: 0, transition: { duration: 300 } }"
-  >
+    v-motion :initial="{ scale: 0.8, opacity: 0 }" :enter="{ scale: 1, opacity: 1, transition: { duration: 300 } }"
+    :leave="{ scale: 0.8, opacity: 0, transition: { duration: 300 } }">
     <ArrowUpIcon class="h-5 w-5" />
   </button>
 
   <!-- Mobile Table of Contents Drawer -->
-  <div
-    v-if="tableOfContents.length > 0"
-    class="md:hidden fixed bottom-6 left-6 z-50"
-  >
-    <button
-      @click="showTocDrawer = true"
-      class="p-3 rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:bg-primary/90"
-      v-motion
+  <div v-if="tableOfContents.length > 0" class="md:hidden fixed bottom-6 left-6 z-50">
+    <button @click="showTocDrawer = true"
+      class="p-3 rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:bg-primary/90" v-motion
       :initial="{ scale: 0.8, opacity: 0 }"
-      :enter="{ scale: 1, opacity: 1, transition: { duration: 300, delay: 1000 } }"
-    >
+      :enter="{ scale: 1, opacity: 1, transition: { duration: 300, delay: 1000 } }">
       <ListIcon class="h-5 w-5" />
     </button>
   </div>
 
   <!-- Mobile TOC Drawer -->
-  <div
-    v-if="showTocDrawer"
-    class="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
-    @click="showTocDrawer = false"
-  >
+  <div v-if="showTocDrawer" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
+    @click="showTocDrawer = false">
     <div
       class="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-6 rounded-t-xl max-h-[70vh] overflow-y-auto"
-      @click.stop
-      v-motion
-      :initial="{ y: '100%' }"
+      @click.stop v-motion :initial="{ y: '100%' }"
       :enter="{ y: 0, transition: { type: 'spring', stiffness: 300, damping: 30 } }"
-      :leave="{ y: '100%', transition: { duration: 300 } }"
-    >
+      :leave="{ y: '100%', transition: { duration: 300 } }">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold flex items-center">
           <ListIcon class="w-5 h-5 mr-2 text-primary" />
@@ -488,30 +347,24 @@
       </div>
       <div class="w-12 h-1 bg-muted rounded-full mx-auto mb-4"></div>
       <ul class="space-y-3">
-        <li
-          v-for="(item, index) in tableOfContents"
-          :key="index"
-          class="relative"
-        >
-          <a
-            :href="`#heading-${index}`"
+        <li v-for="(item, index) in tableOfContents" :key="index" class="relative">
+          <a :href="`#heading-${index}`"
             class="text-muted-foreground hover:text-primary transition-colors line-clamp-1 pl-4 py-2 block hover:bg-primary/5 rounded-md"
             :class="{ 'text-primary font-medium': activeHeading === `heading-${index}` }"
-            @click="scrollToHeadingMobile(`heading-${index}`)"
-          >
-            <div
-              class="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/30"
-              :class="{ 'bg-primary': activeHeading === `heading-${index}` }"
-            ></div>
+            @click="scrollToHeadingMobile(`heading-${index}`)">
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/30"
+              :class="{ 'bg-primary': activeHeading === `heading-${index}` }"></div>
             {{ item }}
           </a>
         </li>
       </ul>
     </div>
   </div>
+  </PublicLayout>
 </template>
 
 <script setup>
+import PublicLayout from '@/layouts/PublicLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import { useMotion } from '@vueuse/motion';
@@ -833,13 +686,6 @@ function shareTo(platform) {
   }
 }
 
-// Reading progress
-// Initialize readingProgress ref outside of conditional
-
-// Function to update reading progress
-
-
-// Call updateReadingProgress and handleScroll on scroll
 
 
 </script>
@@ -902,6 +748,22 @@ function shareTo(platform) {
 .article-content :deep(li) {
   margin-bottom: 0.75rem;
   line-height: 1.7;
+}
+
+.libutton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7px;
+  text-align: center;
+  outline: none;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  width: 200px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #0A66C2;
+  font-family: "SF Pro Text", Helvetica, sans-serif;
 }
 
 .article-content :deep(blockquote) {
@@ -1055,9 +917,12 @@ function shareTo(platform) {
 
 /* Reading progress bar animation */
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -1071,19 +936,21 @@ function shareTo(platform) {
 
 /* Code block container */
 .prose :where(pre) {
-  background-color: #1e1e2e !important; /* Dark background for both modes */
+  background-color: #1e1e2e !important;
+  /* Dark background for both modes */
   border-radius: 0.75rem;
   margin: 1.5rem 0;
   padding: 1.25rem;
   overflow-x: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15),
-              0 5px 10px -5px rgba(0, 0, 0, 0.1);
+    0 5px 10px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* Code inside pre blocks */
 .prose :where(pre) :where(code) {
-  color: #f8f8f2 !important; /* Light text for dark background */
+  color: #f8f8f2 !important;
+  /* Light text for dark background */
   background-color: transparent !important;
   padding: 0;
   border: none;
@@ -1119,7 +986,8 @@ function shareTo(platform) {
   display: flex;
   justify-content: flex-end;
   padding: 0.75rem 1rem;
-  background-color: #191926; /* Dark header for both modes */
+  background-color: #191926;
+  /* Dark header for both modes */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -1130,7 +998,8 @@ function shareTo(platform) {
   gap: 0.25rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8); /* Light text for dark background */
+  color: rgba(255, 255, 255, 0.8);
+  /* Light text for dark background */
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.25rem;

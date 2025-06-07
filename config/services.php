@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'whatsapp' => [
+        'number' => env('WHATSAPP_NUMBER', '0714000481'), // Replace with your WhatsApp number
+        'default_message' => env('WHATSAPP_DEFAULT_MESSAGE', 'Hello! I have a question about your services.'),
+    ],
 
 ];

@@ -130,35 +130,62 @@ class CompanyController extends Controller
     }
 
     // Blog index page
-    public function blog(): Response
+      public function blog(Request $request): Response
     {
-        // Get featured post without assuming profile relationship
-        $featuredPost = Post::with([
-            'category:id,name,slug',
-            'user:id,name'
-        ])
-            ->where('is_published', true)
-            ->orderByDesc('published_at')
-            ->first();
+        // Validate and sanitize inputs
+        $validated = $request->validate([
+            'category' => 'nullable|string|max:255',
+            'search' => 'nullable|string|max:255',
+            'page' => 'nullable|integer|min:1'
+        ]);
 
-        // Format featured post if exists
-        $formattedFeaturedPost = $featuredPost ? $this->formatPost($featuredPost) : null;
+        // Get featured post (only show if no filters are active)
+        $featuredPost = null;
+        if (empty($validated['category']) && empty($validated['search'])) {
+            $featuredPostQuery = Post::with([
+                'category:id,name,slug',
+                'user:id,name'
+            ])
+                ->where('is_published', true)
+                ->orderByDesc('published_at')
+                ->first();
 
-        // Get regular posts (excluding featured if exists)
+            $featuredPost = $featuredPostQuery ? $this->formatPost($featuredPostQuery) : null;
+        }
+
+        // Build posts query with filters
         $postsQuery = Post::with([
             'category:id,name,slug',
             'user:id,name'
         ])
             ->where('is_published', true)
+            ->when($validated['category'] ?? null, function ($query, $category) {
+                if ($category !== 'all') {
+                    $query->whereHas('category', fn($q) => $q->where('slug', $category));
+                }
+            })
+            ->when($validated['search'] ?? null, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%")
+                      ->orWhere('body', 'like', "%{$search}%");
+                });
+            })
             ->orderByDesc('published_at');
 
+        // Exclude featured post if it exists and no filters are active
         if ($featuredPost) {
-            $postsQuery->where('id', '!=', $featuredPost->id);
+            $postsQuery->where('id', '!=', $featuredPostQuery->id);
         }
 
-        $formattedPosts = $postsQuery->get()->map(fn($post) => $this->formatPost($post));
+        // Paginate results
+        $posts = $postsQuery->paginate(6)->withQueryString();
 
-        // Get categories
+        // Format posts
+        $formattedPosts = $posts->getCollection()->map(fn($post) => $this->formatPost($post));
+        $posts->setCollection($formattedPosts);
+
+        // Get categories for filtering
         $formattedCategories = Category::select('id', 'name', 'slug')
             ->get()
             ->map(fn($category) => [
@@ -174,11 +201,55 @@ class CompanyController extends Controller
             'icon' => 'BookOpenIcon'
         ]);
 
+        // Build dynamic meta data
+        $meta = $this->buildBlogMetaData($validated);
+
         return inertia('Company/Blog', [
-            'featuredPost' => $formattedFeaturedPost,
-            'blogPosts' => $formattedPosts,
-            'categories' => $formattedCategories
+            'featuredPost' => $featuredPost,
+            'blogPosts' => $posts,
+            'categories' => $formattedCategories,
+            'filters' => $request->only(['category', 'search']),
+            'meta' => $meta,
         ]);
+    }
+
+    private function buildBlogMetaData(array $filters): array
+    {
+        $title = 'Blog | TechXtraSol';
+        $description = 'Discover the latest trends, technologies, and insights from our experts.';
+
+        // Customize meta based on active filters
+        if (!empty($filters['category']) && $filters['category'] !== 'all') {
+            $category = Category::where('slug', $filters['category'])->first();
+            if ($category) {
+                $title = "{$category->name} Articles | Blog | TechXtraSol";
+                $description = "Explore our latest {$category->name} articles and insights.";
+            }
+        }
+
+        if (!empty($filters['search'])) {
+            $searchTerm = Str::limit($filters['search'], 50);
+            $title = "Search: {$searchTerm} | Blog | TechXtraSol";
+            $description = "Search results for '{$searchTerm}' in our blog articles.";
+        }
+
+        if (!empty($filters['category']) && !empty($filters['search']) && $filters['category'] !== 'all') {
+            $category = Category::where('slug', $filters['category'])->first();
+            $searchTerm = Str::limit($filters['search'], 50);
+            if ($category) {
+                $title = "Search: {$searchTerm} in {$category->name} | Blog | TechXtraSol";
+                $description = "Search results for '{$searchTerm}' in {$category->name} articles.";
+            }
+        }
+
+        return [
+            'title' => $title,
+            'description' => $description,
+            'image' => asset('images/blog-default-og.jpg'),
+            'url' => url()->current(),
+            'type' => 'website',
+            'canonical' => url()->current(),
+        ];
     }
 
     // Single post view

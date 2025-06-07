@@ -1,301 +1,398 @@
 <template>
-  <section
-    class="py-20 bg-background"
-    aria-labelledby="services-heading"
-  >
+  <section id="service-section" class="py-16 sm:py-20 bg-background" aria-labelledby="services-heading">
     <div class="container px-4 mx-auto">
-      <!-- Section Header with semantic HTML -->
-      <div class="text-center mb-16">
+      <!-- Streamlined Section Header -->
+      <header class="text-center mb-12 sm:mb-16">
         <h2 id="services-heading" class="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
           Our <span class="text-primary">Services</span>
         </h2>
-        <p class="text-muted-foreground max-w-2xl mx-auto">
-          We offer a comprehensive range of technology solutions to help your business thrive in the digital landscape.
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Comprehensive technology solutions that drive business growth and digital transformation.
         </p>
-      </div>
+      </header>
 
-      <!-- Services Grid with Intersection Observer for performance -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        ref="servicesGrid"
-      >
-        <div
-          v-for="(service, index) in services"
-          :key="service.title"
-          class="service-card"
-          :class="{ 'is-visible': visibleCards[index] }"
-        >
-          <div class="bg-card rounded-lg p-6 h-full border border-border shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/50 hover:-translate-y-1">
-            <!-- Icon with explicit dimensions to prevent layout shifts -->
-            <div class="service-icon-wrapper mb-6">
-              <div class="p-4 rounded-lg bg-primary/10 inline-block">
-                <component :is="service.icon" class="h-8 w-8 text-primary" aria-hidden="true" />
+      <!-- Optimized Services Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" ref="servicesGrid">
+        <article v-for="(service, index) in services" :key="service.title" class="service-card group"
+          :class="{ 'is-visible': visibleCards[index] }" :style="{ '--delay': `${index * 100}ms` }">
+          <div
+            class="bg-card rounded-xl p-6 h-full border border-border shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary/50 hover:-translate-y-2 flex flex-col">
+
+            <!-- Icon Section -->
+            <div class="service-icon-wrapper mb-4">
+              <div
+                class="p-3 rounded-lg bg-primary/10 inline-block group-hover:bg-primary/20 transition-colors duration-300">
+                <component :is="service.icon" class="h-6 w-6 text-primary" aria-hidden="true" />
               </div>
             </div>
 
-            <!-- Semantic heading with proper hierarchy -->
-            <h3 class="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-              {{ service.title }}
-            </h3>
+            <!-- Content Section -->
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                {{ service.title }}
+              </h3>
 
-            <p class="text-muted-foreground mb-6">
-              {{ service.description }}
-            </p>
+              <p class="text-muted-foreground mb-4 leading-relaxed">
+                {{ service.description }}
+              </p>
 
-            <!-- Feature list with semantic markup -->
-            <ul class="mb-6 space-y-2" aria-label="Features">
-              <li
-                v-for="(feature, i) in service.features"
-                :key="i"
-                class="flex items-start"
-              >
-                <CheckIcon class="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                <span class="text-sm">{{ feature }}</span>
-              </li>
-            </ul>
+              <!-- Simplified Feature Highlights -->
+              <div class="mb-6">
+                <div class="flex flex-wrap gap-2">
+                  <span v-for="(feature, i) in service.highlights" :key="i"
+                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                    {{ feature }}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-            <!-- Action buttons with proper accessibility -->
-            <div class="mt-auto pt-4 flex space-x-3">
-              <button
-                @click="goToConsult"
-                class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
-                aria-label="Get a quote for {{ service.title }}"
-              >
-                Get a Quote
-              </button>
-              <button
-                class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
-                aria-label="Learn more about {{ service.title }}"
-              >
-                Learn More
-                <ArrowRightIcon class="ml-2 h-4 w-4" aria-hidden="true" />
+            <!-- Single CTA Button -->
+            <div class="mt-auto">
+              <button @click="requestQuote(service.title)"
+                class="w-full inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md h-10 px-4"
+                :aria-label="`Get a quote for ${service.title} services`">
+                <span>Get Quote</span>
+                <ArrowRightIcon class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  aria-hidden="true" />
               </button>
             </div>
           </div>
-        </div>
+        </article>
       </div>
 
-      <!-- Bottom CTA with semantic markup -->
-      <div
-        class="mt-16 text-center"
-        ref="bottomCta"
-        :class="{ 'is-visible': isCtaVisible }"
-      >
-        <h3 class="text-xl font-semibold mb-4">Need a custom solution?</h3>
-        <button
-          @click="goToConsult"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-2"
-        >
-          <MessageSquareIcon class="mr-2 h-4 w-4" aria-hidden="true" />
-          Schedule a Consultation
-        </button>
+      <!-- Streamlined Bottom CTA -->
+      <div class="mt-12 sm:mt-16 text-center" ref="bottomCta" :class="{ 'is-visible': isCtaVisible }">
+        <div class="bg-card/50 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-border">
+          <h3 class="text-xl font-semibold mb-3">Need a Custom Solution?</h3>
+          <p class="text-muted-foreground mb-6 max-w-md mx-auto">
+            Let's discuss your unique requirements and create a tailored technology strategy.
+          </p>
+          <button @click="scheduleConsultation"
+            class="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg h-11 px-6"
+            aria-label="Schedule a free consultation">
+            <MessageSquareIcon class="mr-2 h-4 w-4" aria-hidden="true" />
+            Schedule Free Consultation
+          </button>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import { router } from '@inertiajs/vue3';
 import {
-  GlobeIcon, SmartphoneIcon, PaletteIcon, ServerIcon,
-  CodeIcon, BarChartIcon, CheckIcon, ArrowRightIcon,
+  GlobeIcon,
+  SmartphoneIcon,
+  PaletteIcon,
+  ServerIcon,
+  CodeIcon,
+  BarChartIcon,
+  ArrowRightIcon,
   MessageSquareIcon
-} from 'lucide-vue-next';
+} from 'lucide-vue-next'
 
-// Navigation function
-const goToConsult = () => {
-  window.location.href = '/our-consultation';
-};
 
-// Service data with structured content for SEO
+
+declare global {
+  interface Window {
+    gtag: any;
+  }
+}
+
+// Streamlined service data with concise descriptions
 const services = [
   {
     icon: GlobeIcon,
     title: "Web Development",
-    description: "We create responsive, high-performance websites and web applications tailored to your business needs.",
-    features: [
-      "Custom website development",
-      "Progressive web applications",
-      "E-commerce solutions",
-      "CMS implementation"
-    ]
+    description: "Fast, responsive websites and web applications that convert visitors into customers.",
+    highlights: ["Responsive Design", "E-commerce", "CMS", "PWA"]
   },
   {
     icon: SmartphoneIcon,
-    title: "Mobile App Development",
-    description: "Native and cross-platform mobile applications that deliver exceptional user experiences across all devices.",
-    features: [
-      "iOS and Android development",
-      "Cross-platform solutions",
-      "App maintenance and updates",
-      "Performance optimization"
-    ]
+    title: "Mobile Development",
+    description: "Native and cross-platform mobile apps that engage users across all devices.",
+    highlights: ["iOS & Android", "Cross-Platform", "App Store", "Updates"]
   },
   {
     icon: PaletteIcon,
     title: "UI/UX Design",
-    description: "User-centered design that combines aesthetics with functionality to create engaging digital experiences.",
-    features: [
-      "User research and testing",
-      "Wireframing and prototyping",
-      "Visual design and branding",
-      "Interaction design"
-    ]
+    description: "User-centered design that combines beautiful aesthetics with seamless functionality.",
+    highlights: ["User Research", "Prototyping", "Branding", "Testing"]
   },
   {
     icon: ServerIcon,
-    title: "DevOps & Cloud Solutions",
-    description: "Streamline your development workflow and optimize your cloud infrastructure for performance and cost.",
-    features: [
-      "CI/CD pipeline setup",
-      "Cloud migration and management",
-      "Infrastructure as code",
-      "Performance monitoring"
-    ]
+    title: "Cloud & DevOps",
+    description: "Scalable cloud infrastructure and streamlined development workflows.",
+    highlights: ["CI/CD", "Cloud Migration", "Monitoring", "Security"]
   },
   {
     icon: CodeIcon,
-    title: "Custom Software Development",
-    description: "Bespoke software solutions designed to address your specific business challenges and requirements.",
-    features: [
-      "Enterprise applications",
-      "Legacy system modernization",
-      "API development and integration",
-      "Database design and optimization"
-    ]
+    title: "Custom Software",
+    description: "Bespoke software solutions tailored to your specific business requirements.",
+    highlights: ["Enterprise Apps", "APIs", "Integration", "Legacy Upgrade"]
   },
   {
     icon: BarChartIcon,
-    title: "Digital Marketing & SEO",
-    description: "Data-driven strategies to increase your online visibility, drive traffic, and convert visitors into customers.",
-    features: [
-      "Search engine optimization",
-      "Content marketing",
-      "Social media management",
-      "Analytics and reporting"
-    ]
+    title: "Digital Marketing",
+    description: "Data-driven strategies that increase visibility and drive measurable growth.",
+    highlights: ["SEO", "Content", "Social Media", "Analytics"]
   }
-];
+]
 
-// Intersection Observer for performance optimization
-const servicesGrid = ref(null);
-const bottomCta = ref(null);
-const visibleCards = ref(Array(services.length).fill(false));
-const isCtaVisible = ref(false);
+// Enhanced navigation functions with analytics tracking
+const requestQuote = (serviceName: string) => {
+  // Track the service interest for analytics
+  if (typeof window.gtag !== 'undefined') {
+    window.gtag('event', 'quote_request', {
+      service_name: serviceName,
+      event_category: 'engagement'
+    })
+  }
 
-let observers = [];
+  // Navigate to contact with service pre-selected
+  const contactSection = document.getElementById('contact-section')
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    // Optional: Pre-fill form with service selection
+    setTimeout(() => {
+      const serviceSelect = document.querySelector('select[name="service"]') as HTMLSelectElement
+      if (serviceSelect) {
+        serviceSelect.value = serviceName
+        serviceSelect.dispatchEvent(new Event('change'))
+      }
+    }, 500)
+  }
+}
+
+const scheduleConsultation = () => {
+  // Track consultation interest
+  router.visit('/agency/consultation')
+
+}
+
+// Navigate to contact section
+
+
+
+// Optimized Intersection Observer implementation
+const servicesGrid = ref<HTMLElement | null>(null)
+const bottomCta = ref<HTMLElement | null>(null)
+const visibleCards = ref(Array(services.length).fill(false))
+const isCtaVisible = ref(false)
+
+let observers: IntersectionObserver[] = []
 
 onMounted(() => {
-  // Create observer for service cards
+  // Optimized observer for service cards
   if (servicesGrid.value) {
-    const cardElements = servicesGrid.value.querySelectorAll('.service-card');
+    const cardElements = servicesGrid.value.querySelectorAll('.service-card')
 
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = Array.from(cardElements).indexOf(entry.target);
-          if (index !== -1) {
-            visibleCards.value[index] = true;
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = Array.from(cardElements).indexOf(entry.target)
+            if (index !== -1) {
+              visibleCards.value[index] = true
+            }
+            cardObserver.unobserve(entry.target)
           }
-          cardObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px 50px 0px' });
+        })
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    )
 
     cardElements.forEach(card => {
-      cardObserver.observe(card);
-    });
+      cardObserver.observe(card)
+    })
 
-    observers.push(cardObserver);
+    observers.push(cardObserver)
   }
 
-  // Create observer for bottom CTA
+  // Observer for bottom CTA
   if (bottomCta.value) {
-    const ctaObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          isCtaVisible.value = true;
-          ctaObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+    const ctaObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            isCtaVisible.value = true
+            ctaObserver.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
 
-    ctaObserver.observe(bottomCta.value);
-    observers.push(ctaObserver);
+    ctaObserver.observe(bottomCta.value)
+    observers.push(ctaObserver)
   }
-});
+})
 
-// Clean up observers on component unmount
+// Cleanup observers
 onUnmounted(() => {
-  observers.forEach(observer => observer.disconnect());
-  observers = [];
-});
+  observers.forEach(observer => observer.disconnect())
+  observers = []
+})
 </script>
 
 <style scoped>
-/* Base styles for service cards */
+/* Enhanced base styles with better performance */
 .service-card {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-  contain: content; /* CSS containment for performance */
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: var(--delay);
+  contain: layout style paint;
 }
 
-/* Apply animation only when card becomes visible */
 .service-card.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Staggered animation delay based on card index */
-.service-card:nth-child(1).is-visible { transition-delay: 0ms; }
-.service-card:nth-child(2).is-visible { transition-delay: 100ms; }
-.service-card:nth-child(3).is-visible { transition-delay: 200ms; }
-.service-card:nth-child(4).is-visible { transition-delay: 300ms; }
-.service-card:nth-child(5).is-visible { transition-delay: 400ms; }
-.service-card:nth-child(6).is-visible { transition-delay: 500ms; }
+/* Enhanced hover effects */
+.service-card:hover {
+  will-change: transform;
+}
 
-/* Icon wrapper transition */
+.service-card:not(:hover) {
+  will-change: auto;
+}
+
+/* Icon wrapper enhanced animation */
 .service-icon-wrapper {
-  transition: transform 0.3s ease;
-  will-change: transform; /* Hint for browser optimization */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .service-card:hover .service-icon-wrapper {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(5deg);
 }
 
-/* Bottom CTA animation */
-.mt-16 {
+/* Bottom CTA enhanced styling */
+.mt-12 {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   transition-delay: 600ms;
 }
 
-.mt-16.is-visible {
+.mt-12.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Ensure all cards have the same height */
-.service-card > div {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+/* Feature highlights styling */
+.service-card .flex-wrap span {
+  transition: all 0.2s ease;
 }
 
-/* Reduce animations for users who prefer reduced motion */
+.service-card:hover .flex-wrap span {
+  transform: scale(1.05);
+}
+
+/* Enhanced button animations */
+.service-card button {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.service-card:hover button::before {
+  left: 100%;
+}
+
+/* Responsive optimizations */
+@media (max-width: 768px) {
+  .service-card {
+    transform: translateY(20px);
+  }
+
+  .service-icon-wrapper {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Accessibility and reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   .service-card,
-  .mt-16 {
+  .mt-12,
+  .service-icon-wrapper,
+  .service-card button::before {
     transition: none;
-    opacity: 1;
+    animation: none;
     transform: none;
   }
 
-  .service-card:hover .service-icon-wrapper {
+  .service-card {
+    opacity: 1;
+  }
+
+  .mt-12 {
+    opacity: 1;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .service-card>div {
+    border-width: 2px;
+  }
+
+  .service-card .flex-wrap span {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Print styles */
+@media print {
+  .service-card {
+    opacity: 1;
     transform: none;
+    break-inside: avoid;
+  }
+
+  .service-card button {
+    display: none;
+  }
+}
+
+/* Focus styles for better accessibility */
+.service-card:focus-within {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Performance optimization for animations */
+.service-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Ensure consistent card heights */
+.service-card>div {
+  min-height: 280px;
+}
+
+@media (min-width: 1024px) {
+  .service-card>div {
+    min-height: 320px;
   }
 }
 </style>

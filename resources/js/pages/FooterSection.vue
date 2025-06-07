@@ -163,11 +163,7 @@
                 Terms of Service
               </a>
             </li>
-            <li>
-              <a href="/sitemap.xml" class="text-sm text-muted-foreground hover:text-primary transition-colors duration-300">
-                Sitemap
-              </a>
-            </li>
+            
           </ul>
         </nav>
       </div>

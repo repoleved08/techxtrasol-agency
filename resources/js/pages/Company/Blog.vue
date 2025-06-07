@@ -1,6 +1,5 @@
 <template>
-
-  <Head title="Blog" />
+  <Head title="Blog Section" />
   <PublicLayout>
     <div class="bg-background py-12 md:py-20">
       <div class="container px-4 mx-auto">
@@ -21,32 +20,117 @@
         <!-- Search and Filter Bar -->
         <div v-motion :initial="{ opacity: 0 }" :enter="{ opacity: 1, transition: { duration: 600, delay: 200 } }"
           class="flex flex-col md:flex-row gap-4 mb-10 justify-between items-center">
+
+          <!-- Search Form -->
           <div class="relative w-full md:w-72">
-            <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="Search articles..." class="pl-10" v-model="searchQuery"
-              @input="currentPage = 1" v-motion :initial="{ scale: 0.95, opacity: 0 }"
-              :enter="{ scale: 1, opacity: 1, transition: { duration: 400, delay: 300 } }" />
+            <form
+              :action="route('blog')"
+              method="GET"
+              @submit="handleSearchSubmit"
+              ref="searchForm"
+            >
+              <!-- Preserve current category filter -->
+              <input
+                v-if="activeCategory && activeCategory !== 'all'"
+                type="hidden"
+                name="category"
+                :value="activeCategory"
+              >
+
+              <div class="relative">
+                <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  name="search"
+                  placeholder="Search articles..."
+                  class="pl-10"
+                  v-model="searchQuery"
+                  v-motion :initial="{ scale: 0.95, opacity: 0 }"
+                  :enter="{ scale: 1, opacity: 1, transition: { duration: 400, delay: 300 } }"
+                />
+                <button
+                  type="submit"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  :disabled="isSearching"
+                >
+                  <ArrowRightIcon class="h-4 w-4" />
+                </button>
+              </div>
+            </form>
           </div>
+
+          <!-- Category Filters -->
           <div class="flex flex-wrap gap-2 justify-center md:justify-end">
-            <Button v-for="(category, index) in categories" :key="category.id"
-              :variant="activeCategory === category.id ? 'default' : 'outline'" size="sm"
-              @click="setCategory(category.id)" class="transition-all duration-300 hover:scale-105" v-motion
+            <Link
+              v-for="(category, index) in categories"
+              :key="category.id"
+              :href="buildCategoryUrl(category.id)"
+              class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105"
+              :class="activeCategory === category.id ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'"
+              v-motion
               :initial="{ scale: 0.9, opacity: 0 }"
-              :enter="{ scale: 1, opacity: 1, transition: { duration: 400, delay: 300 + (index * 50) } }">
+              :enter="{ scale: 1, opacity: 1, transition: { duration: 400, delay: 300 + (index * 50) } }"
+            >
               <component :is="getCategoryIcon(category)" class="h-4 w-4 mr-2" />
               {{ category.name }}
-            </Button>
+            </Link>
           </div>
         </div>
 
+        <!-- Active Filters Display -->
+        <div v-if="hasActiveFilters" class="flex flex-wrap items-center gap-2 mb-6 p-4 bg-muted/50 rounded-lg">
+          <span class="text-sm font-medium text-muted-foreground">Active filters:</span>
+
+          <div v-if="activeCategory && activeCategory !== 'all'" class="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <span>Category: {{ getCategoryName(activeCategory) }}</span>
+            <Link
+              :href="buildClearCategoryUrl()"
+              class="ml-1 hover:bg-primary/20 rounded-full p-0.5"
+            >
+              <XIcon class="h-3 w-3" />
+            </Link>
+          </div>
+
+          <div v-if="filters.search" class="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <span>Search: "{{ filters.search }}"</span>
+            <Link
+              :href="buildClearSearchUrl()"
+              class="ml-1 hover:bg-primary/20 rounded-full p-0.5"
+            >
+              <XIcon class="h-3 w-3" />
+            </Link>
+          </div>
+
+          <Link
+            :href="route('blog')"
+            class="text-sm text-muted-foreground hover:text-foreground underline"
+          >
+            Clear all filters
+          </Link>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="mb-6">
+          <p class="text-sm text-muted-foreground">
+            <template v-if="hasActiveFilters">
+              Found {{ blogPosts.total }} article{{ blogPosts.total !== 1 ? 's' : '' }}
+              <template v-if="filters.search">matching "{{ filters.search }}"</template>
+              <template v-if="activeCategory && activeCategory !== 'all'">in {{ getCategoryName(activeCategory) }}</template>
+            </template>
+            <template v-else>
+              Showing {{ blogPosts.total }} articles
+            </template>
+          </p>
+        </div>
+
         <!-- Featured Post -->
-        <div v-if="featuredPost && !searchQuery" v-motion :initial="{ opacity: 0, y: 20 }"
+        <div v-if="featuredPost && !hasActiveFilters" v-motion :initial="{ opacity: 0, y: 20 }"
           :enter="{ opacity: 1, y: 0, transition: { duration: 800 } }" class="mb-12">
           <Card
             class="overflow-hidden group border-border/40 hover:border-primary/30 transition-all duration-500 hover:shadow-lg hover:shadow-primary/10">
             <div class="grid md:grid-cols-2 gap-0">
               <div class="relative overflow-hidden aspect-video md:aspect-auto">
-                <img :src="featuredPost.image || '/placeholder.svg?height=400&width=600'" :alt="featuredPost.title"
+                <img :src="featuredPost.image" :alt="featuredPost.title"
                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <Badge class="absolute top-4 left-4 bg-primary hover:bg-primary text-primary-foreground" v-motion
                   :initial="{ scale: 0.8, opacity: 0 }"
@@ -58,7 +142,9 @@
                 <div>
                   <div class="flex items-center gap-2 mb-3">
                     <Badge variant="outline">{{ featuredPost.category }}</Badge>
-                    <span class="text-xs text-muted-foreground">{{ formatDate(featuredPost.date) }}</span>
+                    <time class="text-xs text-muted-foreground" :datetime="featuredPost.date">
+                      {{ formatDate(featuredPost.date) }}
+                    </time>
                   </div>
                   <h3 class="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{{
                     featuredPost.title }}</h3>
@@ -67,7 +153,7 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <Avatar class="h-10 w-10">
-                      <AvatarImage :src="featuredPost.author.avatar || '/placeholder.svg?height=40&width=40'"
+                      <AvatarImage :src="featuredPost.author.avatar"
                         :alt="featuredPost.author.name" />
                       <AvatarFallback>{{ getInitials(featuredPost.author.name) }}</AvatarFallback>
                     </Avatar>
@@ -89,19 +175,17 @@
           </Card>
         </div>
 
-    
-
         <!-- Blog Posts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <!-- Render all filtered posts directly without pagination for debugging -->
-          <div v-for="(post, index) in displayedPosts" :key="post.id" v-motion :initial="{ opacity: 0, y: 30 }"
+          <article v-for="(post, index) in blogPosts.data" :key="post.id" v-motion :initial="{ opacity: 0, y: 30 }"
             :enter="{ opacity: 1, y: 0, transition: { duration: 600, delay: 100 + (index * 100) } }" class="group">
             <Card
               class="overflow-hidden h-full border-border/40 transition-all duration-500 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1">
               <div class="relative overflow-hidden aspect-video">
                 <Link :href="`/agency/blog/${post.slug}`" class="block">
-                <img :src="post.image || '/placeholder.svg?height=300&width=500'" :alt="post.title"
-                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img :src="post.image" :alt="post.title"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy" />
                 <div
                   class="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 </div>
@@ -113,21 +197,21 @@
                   </Badge>
                   <Badge variant="outline" class="bg-background/80" v-motion :initial="{ scale: 0.8, opacity: 0 }"
                     :enter="{ scale: 1, opacity: 1, transition: { delay: 300 + (index * 100) } }">
-                    {{ formatDate(post.date) }}
+                    <time :datetime="post.date">{{ formatDate(post.date) }}</time>
                   </Badge>
                 </div>
               </div>
               <CardContent class="p-5">
                 <Link :href="`/agency/blog/${post.slug}`" class="block">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                  {{ post.title }}</h3>
+                <h2 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                  {{ post.title }}</h2>
                 </Link>
                 <div class="prose prose-sm text-muted-foreground mb-6 max-w-none" v-html="post.excerpt"></div>
               </CardContent>
               <CardFooter class="px-5 pb-5 pt-0 flex justify-between items-center">
                 <div class="flex items-center gap-2">
                   <Avatar class="h-8 w-8">
-                    <AvatarImage :src="post.author.avatar || '/placeholder.svg?height=32&width=32'"
+                    <AvatarImage :src="post.author.avatar"
                       :alt="post.author.name" />
                     <AvatarFallback>{{ getInitials(post.author.name) }}</AvatarFallback>
                   </Avatar>
@@ -142,41 +226,66 @@
                 </Button>
               </CardFooter>
             </Card>
-          </div>
+          </article>
         </div>
 
-        <!-- Empty State -->
-        <div v-if="filteredPosts.length === 0" class="text-center py-16" v-motion :initial="{ opacity: 0, scale: 0.9 }"
+        <!-- No Results -->
+        <div v-if="blogPosts.data.length === 0" class="text-center py-16" v-motion :initial="{ opacity: 0, scale: 0.9 }"
           :enter="{ opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 25 } }">
           <div class="inline-block p-4 rounded-full bg-primary/10 mb-4">
             <BookOpenIcon class="h-8 w-8 text-primary" />
           </div>
-          <h3 class="text-xl font-bold mb-2">No posts found</h3>
-          <p class="text-muted-foreground">Try adjusting your search or filter criteria</p>
-          <Button @click="resetFilters" variant="outline" class="mt-4">
-            Reset Filters
-          </Button>
+          <h3 class="text-xl font-bold mb-2">No articles found</h3>
+          <p class="text-muted-foreground mb-4">
+            <template v-if="hasActiveFilters">
+              Try adjusting your search terms or filters to find what you're looking for.
+            </template>
+            <template v-else>
+              No articles have been published yet. Check back soon!
+            </template>
+          </p>
+          <Link
+            v-if="hasActiveFilters"
+            :href="route('blog')"
+            class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            View all articles
+          </Link>
         </div>
 
-        <!-- Simplified Pagination -->
-        <div v-if="filteredPosts.length > postsPerPage" v-motion :initial="{ opacity: 0, y: 20 }"
-          :enter="{ opacity: 1, y: 0, transition: { duration: 600, delay: 400 } }" class="mt-12 flex justify-center">
-          <div class="flex items-center gap-2">
-            <Button variant="outline" size="icon" :disabled="currentPage === 1" @click="currentPage--">
-              <ChevronLeftIcon class="h-4 w-4" />
-            </Button>
+        <!-- Pagination -->
+        <nav v-if="blogPosts.data.length > 0 && (blogPosts.prev_page_url || blogPosts.next_page_url)"
+          v-motion :initial="{ opacity: 0, y: 20 }"
+          :enter="{ opacity: 1, y: 0, transition: { duration: 600, delay: 400 } }"
+          class="mt-12 flex justify-between items-center"
+          aria-label="Blog pagination">
 
-            <Button v-for="page in totalPages" :key="page" variant="outline" size="sm"
-              :class="{ 'bg-primary text-primary-foreground hover:bg-primary/90': currentPage === page }"
-              @click="currentPage = page">
-              {{ page }}
-            </Button>
-
-            <Button variant="outline" size="icon" :disabled="currentPage === totalPages" @click="currentPage++">
-              <ChevronRightIcon class="h-4 w-4" />
-            </Button>
+          <div class="text-sm text-muted-foreground">
+            Showing {{ blogPosts.from }} to {{ blogPosts.to }} of {{ blogPosts.total }} articles
           </div>
-        </div>
+
+          <div class="flex gap-2">
+            <Link
+              v-if="blogPosts.prev_page_url"
+              :href="blogPosts.prev_page_url"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+              rel="prev"
+            >
+              <ChevronLeftIcon class="h-4 w-4 mr-1" />
+              Previous
+            </Link>
+
+            <Link
+              v-if="blogPosts.next_page_url"
+              :href="blogPosts.next_page_url"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+              rel="next"
+            >
+              Next
+              <ChevronRightIcon class="h-4 w-4 ml-1" />
+            </Link>
+          </div>
+        </nav>
 
         <!-- Newsletter Subscription -->
         <Newsletter class="mt-16 md:mt-24" v-motion :initial="{ opacity: 0, y: 30 }"
@@ -190,11 +299,12 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
 import Newsletter from './Newsletter.vue';
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { useMotion } from '@vueuse/motion';
 import { Head } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
 import {
   BookOpenIcon,
@@ -206,8 +316,7 @@ import {
   ArrowRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  SendIcon,
-  MailIcon
+  XIcon
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -215,40 +324,84 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
-// Get data from Inertia props
-const page = usePage();
-const props = page.props;
+const props = defineProps({
+  blogPosts: Object,
+  categories: Array,
+  featuredPost: Object,
+  filters: Object
+});
 
-// Blog categories from backend
-const categories = ref(props.categories || []);
+const searchQuery = ref(props.filters?.search || '');
+const activeCategory = computed(() => props.filters?.category || 'all');
+const hasActiveFilters = computed(() =>
+  (activeCategory.value && activeCategory.value !== 'all') || props.filters?.search
+);
+const isSearching = ref(false);
 
-// Blog posts from backend - ensure we have a copy to avoid reactivity issues
-const blogPosts = ref([...(props.blogPosts || [])]);
+// Enhanced search function with progressive enhancement
+const handleSearchSubmit = (event) => {
+  if (typeof router !== 'undefined') {
+    event.preventDefault();
+    isSearching.value = true;
 
-// Featured post from backend
-const featuredPost = ref(props.featuredPost || null);
+    const params = {};
 
-const activeCategory = ref('all');
-const searchQuery = ref('');
+    if (searchQuery.value && searchQuery.value.trim()) {
+      params.search = searchQuery.value.trim();
+    }
 
-// Pagination state - simplified
-const currentPage = ref(1);
-const postsPerPage = ref(6); // Number of posts to show per page
+    if (activeCategory.value && activeCategory.value !== 'all') {
+      params.category = activeCategory.value;
+    }
 
-// Set category and reset pagination
-const setCategory = (categoryId) => {
-  activeCategory.value = categoryId;
-  currentPage.value = 1;
+    router.get(route('blog'), params, {
+      preserveState: true,
+      replace: true,
+      onFinish: () => {
+        isSearching.value = false;
+      },
+      onError: (errors) => {
+        console.error('Search error:', errors);
+        isSearching.value = false;
+      }
+    });
+  }
 };
 
-// Reset all filters
-const resetFilters = () => {
-  activeCategory.value = 'all';
-  searchQuery.value = '';
-  currentPage.value = 1;
+// URL building helpers
+const buildCategoryUrl = (categoryId) => {
+  const params = {};
+  if (categoryId !== 'all') {
+    params.category = categoryId;
+  }
+  if (props.filters?.search) {
+    params.search = props.filters.search;
+  }
+  return route('blog', params);
 };
 
-// Format date helper
+const buildClearCategoryUrl = () => {
+  const params = {};
+  if (props.filters?.search) {
+    params.search = props.filters.search;
+  }
+  return route('blog', params);
+};
+
+const buildClearSearchUrl = () => {
+  const params = {};
+  if (activeCategory.value && activeCategory.value !== 'all') {
+    params.category = activeCategory.value;
+  }
+  return route('blog', params);
+};
+
+// Helper functions
+const getCategoryName = (slug) => {
+  const category = props.categories.find(cat => cat.id === slug);
+  return category ? category.name : slug;
+};
+
 const formatDate = (dateString) => {
   if (!dateString) return '';
   const date = new Date(dateString);
@@ -259,7 +412,6 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-// Get initials helper
 const getInitials = (name) => {
   if (!name) return '?';
   return name
@@ -270,7 +422,6 @@ const getInitials = (name) => {
     .slice(0, 2);
 };
 
-// Get icon component from category
 const iconMap = {
   'CodeIcon': CodeIcon,
   'PaletteIcon': PaletteIcon,
@@ -282,72 +433,6 @@ const iconMap = {
 const getCategoryIcon = (category) => {
   return iconMap[category.icon] || BookOpenIcon;
 };
-
-// Filter posts based on active category and search query
-const filteredPosts = computed(() => {
-  // Make sure we have posts to filter
-  if (!blogPosts.value || blogPosts.value.length === 0) {
-    console.warn('No blog posts available to filter');
-    return [];
-  }
-
-  let filtered = [...blogPosts.value];
-
-  // Filter by category
-  if (activeCategory.value !== 'all') {
-    filtered = filtered.filter(post => {
-      // Handle potential undefined category
-      if (!post.category) return false;
-      return post.category.toLowerCase() === activeCategory.value.toLowerCase();
-    });
-  }
-
-  // Filter by search query
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(post =>
-      (post.title && post.title.toLowerCase().includes(query)) ||
-      (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
-      (post.category && post.category.toLowerCase().includes(query))
-    );
-  }
-
-  console.log('Filtered posts:', filtered.length);
-  return filtered;
-});
-
-// Total pages calculation
-const totalPages = computed(() => {
-  return Math.max(1, Math.ceil(filteredPosts.value.length / postsPerPage.value));
-});
-
-// Get posts for current page - simplified approach
-const displayedPosts = computed(() => {
-  const startIndex = (currentPage.value - 1) * postsPerPage.value;
-  const endIndex = startIndex + postsPerPage.value;
-  const posts = filteredPosts.value.slice(startIndex, endIndex);
-  console.log(`Displaying posts ${startIndex} to ${endIndex}:`, posts.length);
-  return posts;
-});
-
-// Watch for changes in filtered posts to reset pagination if needed
-watch(filteredPosts, (newPosts) => {
-  if (currentPage.value > Math.ceil(newPosts.length / postsPerPage.value)) {
-    currentPage.value = 1;
-  }
-});
-
-// Log data on mount for debugging
-onMounted(() => {
-  console.log('Blog component mounted');
-  console.log('Total posts:', blogPosts.value.length);
-  console.log('Categories:', categories.value);
-
-  // Force a re-render to ensure all posts are displayed
-  nextTick(() => {
-    console.log('After nextTick - Displayed posts:', displayedPosts.value.length);
-  });
-});
 </script>
 
 <style scoped>

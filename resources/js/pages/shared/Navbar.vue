@@ -1,141 +1,125 @@
 <template>
   <header
-    class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    class="sticky top-0 z-50 w-full backdrop-blur-md supports-[backdrop-filter]:bg-background/60 border-b border-border/30 shadow-sm">
     <div class="container flex h-16 items-center">
       <!-- Logo -->
       <Link href="/" class="flex items-center gap-2 ml-4 font-bold mr-6 group">
-      <div
-        class="bg-gradient-to-r from-primary to-purple-600 p-1.5 rounded-md transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg">
-        <CodeIcon class="h-5 w-5 text-white" />
-      </div>
-      <span
-        class="hidden sm:inline-block text-lg tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent transition-all duration-300 group-hover:tracking-wider">
-        TechXtraSol
-      </span>
+        <div
+          class="bg-gradient-to-r from-primary to-purple-600 p-1.5 rounded-md transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg">
+          <CodeIcon class="h-5 w-5 text-white" />
+        </div>
+        <span
+          class="hidden sm:inline-block text-lg tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent transition-all duration-300 group-hover:tracking-wider">
+          TechXtraSol
+        </span>
       </Link>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center justify-center flex-1 space-x-1">
-        <!-- Services - No dropdown, scroll to section -->
-        <button @click="handleSectionClick('service-section')"
-          class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
-          <SettingsIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-          Services
-        </button>
-
-        <!-- Solutions - No dropdown, scroll to portfolio -->
-        <button @click="handleSectionClick('portfolio-section')"
-          class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
-          <LayersIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-          Solutions
-        </button>
-
-        <!-- Digital Marketing - Keep dropdown -->
-        <!-- <div class="relative">
-          <button
-            class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105"
-            :class="{ 'bg-accent/50': activeDropdown === 'Digital Marketing' }"
-            @click="toggleDropdown('Digital Marketing')">
-            <BarChartIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-            Digital Marketing
-            <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300"
-              :class="{ 'rotate-180': activeDropdown === 'Digital Marketing' }" />
+        <!-- Main Navigation Items -->
+        <div class="flex items-center space-x-1">
+          <!-- Services - No dropdown, scroll to section -->
+          <button @click="handleSectionClick('service-section')"
+            class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden">
+            <span class="absolute inset-0 w-0 bg-gradient-to-r from-primary/10 to-purple-600/10 transition-all duration-500 ease-out group-hover:w-full"></span>
+            <SettingsIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+            <span class="relative z-10">Services</span>
           </button>
 
-          <Transition enter-active-class="transition-all ease-out duration-300"
-            enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
-            leave-active-class="transition-all ease-in duration-200"
-            leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
-            <div v-if="activeDropdown === 'Digital Marketing'"
-              class="absolute left-0 mt-2 w-64 rounded-md border bg-popover p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
-              @mouseleave="closeDropdownDelayed">
-              <div class="grid gap-2">
-                <Link v-for="(subItem, index) in getSubItems('Digital Marketing')" :key="subItem.label"
-                  :href="subItem.href || '#'"
-                  class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4"
-                  :style="{ transitionDelay: `${index * 30}ms` }">
-                <component :is="subItem.icon" class="mr-3 h-4 w-4 transition-transform duration-300 hover:rotate-12" />
-                {{ subItem.label }}
-                </Link>
-              </div>
-            </div>
-          </Transition>
-        </div> -->
-
-        <!-- Company -->
-        <div class="relative">
-          <button
-            class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105"
-            :class="{ 'bg-accent/50': activeDropdown === 'Company' }" @click="toggleDropdown('Company')">
-            <BuildingIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-            Company
-            <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300"
-              :class="{ 'rotate-180': activeDropdown === 'Company' }" />
+          <!-- Solutions - No dropdown, scroll to portfolio -->
+          <button @click="handleSectionClick('portfolio-section')"
+            class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden">
+            <span class="absolute inset-0 w-0 bg-gradient-to-r from-primary/10 to-purple-600/10 transition-all duration-500 ease-out group-hover:w-full"></span>
+            <LayersIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+            <span class="relative z-10">Solutions</span>
           </button>
 
-          <Transition enter-active-class="transition-all ease-out duration-300"
-            enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
-            leave-active-class="transition-all ease-in duration-200"
-            leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
-            <div v-if="activeDropdown === 'Company'"
-              class="absolute left-0 mt-2 w-64 rounded-md border bg-popover p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
-              @mouseleave="closeDropdownDelayed">
-              <div class="grid gap-2">
-                <Link v-for="(subItem, index) in getSubItems('Company')" :key="subItem.label"
-                  :href="subItem.href || '#'"
-                  class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4"
-                  :style="{ transitionDelay: `${index * 30}ms` }">
-                <component :is="subItem.icon" class="mr-3 h-4 w-4 transition-transform duration-300 hover:rotate-12" />
-                {{ subItem.label }}
-                </Link>
+          <!-- Company Dropdown -->
+          <div class="relative">
+            <button
+              class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden"
+              :class="{ 'bg-accent/50': activeDropdown === 'Company' }" @click="toggleDropdown('Company')">
+              <span class="absolute inset-0 w-0 bg-gradient-to-r from-primary/10 to-purple-600/10 transition-all duration-500 ease-out group-hover:w-full"
+                :class="{ 'w-full': activeDropdown === 'Company' }"></span>
+              <BuildingIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+              <span class="relative z-10">Company</span>
+              <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300 relative z-10"
+                :class="{ 'rotate-180': activeDropdown === 'Company' }" />
+            </button>
+
+            <Transition enter-active-class="transition-all ease-out duration-200"
+              enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
+              leave-active-class="transition-all ease-in duration-150"
+              leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+              <div v-if="activeDropdown === 'Company'"
+                class="absolute left-0 mt-1 w-64 rounded-lg border bg-popover/95 backdrop-blur-sm p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
+                @mouseleave="closeDropdownDelayed">
+                <div class="grid gap-1.5">
+                  <Link v-for="(subItem, index) in getSubItems('Company')" :key="subItem.label"
+                    :href="subItem.href || '#'"
+                    class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4 group"
+                    :style="{ transitionDelay: `${index * 30}ms` }">
+                    <div class="flex items-center w-full">
+                      <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                        <component :is="subItem.icon" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="font-medium">{{ subItem.label }}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               </div>
-            </div>
-          </Transition>
+            </Transition>
+          </div>
+
+          <!-- Resources Dropdown -->
+          <div class="relative">
+            <button
+              class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden"
+              :class="{ 'bg-accent/50': activeDropdown === 'Resources' }" @click="toggleDropdown('Resources')">
+              <span class="absolute inset-0 w-0 bg-gradient-to-r from-primary/10 to-purple-600/10 transition-all duration-500 ease-out group-hover:w-full"
+                :class="{ 'w-full': activeDropdown === 'Resources' }"></span>
+              <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+              <span class="relative z-10">Resources</span>
+              <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300 relative z-10"
+                :class="{ 'rotate-180': activeDropdown === 'Resources' }" />
+            </button>
+
+            <Transition enter-active-class="transition-all ease-out duration-200"
+              enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
+              leave-active-class="transition-all ease-in duration-150"
+              leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+              <div v-if="activeDropdown === 'Resources'"
+                class="absolute left-0 mt-1 w-64 rounded-lg border bg-popover/95 backdrop-blur-sm p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
+                @mouseleave="closeDropdownDelayed">
+                <div class="grid gap-1.5">
+                  <Link v-for="(subItem, index) in getSubItems('Resources')" :key="subItem.label"
+                    :href="subItem.href || '#'"
+                    class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4 group"
+                    :style="{ transitionDelay: `${index * 30}ms` }">
+                    <div class="flex items-center w-full">
+                      <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                        <component :is="subItem.icon" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="font-medium">{{ subItem.label }}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
+          <!-- Blog Link -->
+          <Link href="/agency/blog"
+            class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden">
+            <span class="absolute inset-0 w-0 bg-gradient-to-r from-primary/10 to-purple-600/10 transition-all duration-500 ease-out group-hover:w-full"></span>
+            <FileTextIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+            <span class="relative z-10">Blog</span>
+          </Link>
         </div>
-        <!--  Resources -->
-        <!-- Resources - No dropdown, scroll to blog section -->
-        <!-- <button @click="handleSectionClick('blog-section')"
-          class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
-          <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-          Resources
-        </button> -->
-        <!-- Resource Dropdown-->
-        <div class="relative">
-          <button
-            class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105"
-            :class="{ 'bg-accent/50': activeDropdown === 'Resources' }" @click="toggleDropdown('Resources')">
-            <BookOpenIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-            Resources
-            <ChevronDownIcon class="ml-1 h-4 w-4 transition-transform duration-300"
-              :class="{ 'rotate-180': activeDropdown === 'Resources' }" />
-          </button>
-
-          <Transition enter-active-class="transition-all ease-out duration-300"
-            enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
-            leave-active-class="transition-all ease-in duration-200"
-            leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
-            <div v-if="activeDropdown === 'Resources'"
-              class="absolute left-0 mt-2 w-64 rounded-md border bg-popover p-3 text-popover-foreground shadow-lg max-h-[70vh] overflow-y-auto scrollbar-thin"
-              @mouseleave="closeDropdownDelayed">
-              <div class="grid gap-2">
-                <Link v-for="(subItem, index) in getSubItems('Resources')" :key="subItem.label"
-                  :href="subItem.href || '#'"
-                  class="flex w-full items-center rounded-md p-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:pl-4"
-                  :style="{ transitionDelay: `${index * 30}ms` }">
-                <component :is="subItem.icon" class="mr-3 h-4 w-4 transition-transform duration-300 hover:rotate-12" />
-                {{ subItem.label }}
-                </Link>
-              </div>
-            </div>
-          </Transition>
-        </div>
-        <!-- Blog  Link -->
-        <Link href="/agency/blog"
-          class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:scale-105">
-        <FileTextIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-        Blog
-        </Link>
-
       </nav>
 
       <!-- Right side controls -->
@@ -144,32 +128,40 @@
         <button @click="toggleTheme"
           class="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-all duration-300 ease-in-out overflow-hidden hover:border-primary"
           aria-label="Toggle theme">
-          <Transition mode="out-in">
+          <span class="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-600/5 opacity-0 transition-opacity duration-300 hover:opacity-100"></span>
+          <Transition mode="out-in"
+            enter-active-class="transition-all duration-300 transform"
+            enter-from-class="opacity-0 rotate-90 scale-50"
+            enter-to-class="opacity-100 rotate-0 scale-100"
+            leave-active-class="transition-all duration-300 transform"
+            leave-from-class="opacity-100 rotate-0 scale-100"
+            leave-to-class="opacity-0 rotate-90 scale-50">
             <SunIcon v-if="isDark" key="sun" class="h-4 w-4" />
             <MoonIcon v-else key="moon" class="h-4 w-4" />
           </Transition>
         </button>
 
         <!-- Admin Panel Link -->
-       <div v-if="canViewAdmin">
-  <Link href="/admin"
-    class="group relative inline-flex items-center justify-center overflow-hidden rounded-full h-9 px-4 transition-all duration-300 hover:scale-[1.02]">
-    <span class="absolute inset-0 bg-gradient-to-br from-pink-200 to-pink-300 opacity-90"></span>
-    <span class="absolute inset-0 bg-gradient-to-br from-pink-300 to-pink-400 opacity-0 transition-opacity duration-300 group-hover:opacity-90"></span>
-    <span class="relative flex items-center text-pink-700 z-10">
-      <BuildingIcon class="mr-2 h-3.5 w-3.5 transition-transform duration-500 group-hover:scale-125" />
-      <span class="text-[0.9rem] font-medium tracking-tight">Admin</span>
-      <span class="ml-1.5 h-1.5 w-1.5 rounded-full bg-pink-500 animate-pulse"></span>
-    </span>
-  </Link>
-</div>
+        <div v-if="canViewAdmin">
+          <Link href="/admin"
+            class="group relative inline-flex items-center justify-center overflow-hidden rounded-full h-9 px-4 transition-all duration-300 hover:scale-[1.02]">
+            <span class="absolute inset-0 bg-gradient-to-br from-pink-200 to-pink-300 opacity-90"></span>
+            <span class="absolute inset-0 bg-gradient-to-br from-pink-300 to-pink-400 opacity-0 transition-opacity duration-300 group-hover:opacity-90"></span>
+            <span class="relative flex items-center text-pink-700 z-10">
+              <BuildingIcon class="mr-2 h-3.5 w-3.5 transition-transform duration-500 group-hover:scale-125" />
+              <span class="text-[0.9rem] font-medium tracking-tight">Admin</span>
+              <span class="ml-1.5 h-1.5 w-1.5 rounded-full bg-pink-500 animate-pulse"></span>
+            </span>
+          </Link>
+        </div>
 
         <!-- User dropdown or login links -->
         <div v-if="auth.user">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" size="icon"
-                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary">
+                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary group">
+                <span class="absolute inset-0 rounded-full bg-gradient-to-r from-primary/5 to-purple-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
                 <Avatar class="size-8 overflow-hidden rounded-full">
                   <AvatarImage v-if="auth.user.avatar" :src="auth.user.avatar" :alt="auth.user.name" />
                   <AvatarFallback
@@ -179,7 +171,7 @@
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" class="w-56">
+            <DropdownMenuContent align="end" class="w-56 p-1.5">
               <UserMenuContent :user="auth.user" />
             </DropdownMenuContent>
           </DropdownMenu>
@@ -187,22 +179,22 @@
         <div v-else class="flex items-center gap-2">
           <Link href="/login"
             class="group flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-accent/60 relative overflow-hidden">
-          <span class="relative z-10 flex items-center gap-2">
-            <UserIcon class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
-            <span class="relative">
-              Account
-              <span
-                class="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            <span class="relative z-10 flex items-center gap-2">
+              <UserIcon class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+              <span class="relative">
+                Account
+                <span
+                  class="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </span>
             </span>
-          </span>
-          <span
-            class="absolute inset-0 bg-primary/5 rounded-md transform scale-0 transition-transform duration-300 group-hover:scale-100"></span>
+            <span
+              class="absolute inset-0 bg-primary/5 rounded-md transform scale-0 transition-transform duration-300 group-hover:scale-100"></span>
           </Link>
         </div>
 
-        <!-- Contact Button - Changed to scroll to contact section -->
+        <!-- Contact Button -->
         <button @click="handleSectionClick('contact-section')"
-          class="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 overflow-hidden h-10 px-4 py-2 shadow-md">
+          class="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 overflow-hidden h-10 px-4 py-2 shadow-sm">
           <span
             class="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 transition-all duration-300 group-hover:scale-105"></span>
           <span
@@ -220,7 +212,14 @@
         <button @click="toggleTheme"
           class="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-all duration-300 ease-in-out overflow-hidden hover:border-primary"
           aria-label="Toggle theme">
-          <Transition mode="out-in">
+          <span class="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-600/5 opacity-0 transition-opacity duration-300 hover:opacity-100"></span>
+          <Transition mode="out-in"
+            enter-active-class="transition-all duration-300 transform"
+            enter-from-class="opacity-0 rotate-90 scale-50"
+            enter-to-class="opacity-100 rotate-0 scale-100"
+            leave-active-class="transition-all duration-300 transform"
+            leave-from-class="opacity-100 rotate-0 scale-100"
+            leave-to-class="opacity-0 rotate-90 scale-50">
             <SunIcon v-if="isDark" key="sun" class="h-4 w-4" />
             <MoonIcon v-else key="moon" class="h-4 w-4" />
           </Transition>
@@ -231,9 +230,9 @@
           <Link href="/admin"
             class="relative inline-flex h-9 w-9 items-center justify-center rounded-md border-0 transition-all duration-300 ease-in-out overflow-hidden"
             aria-label="Admin Panel">
-          <span class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-md"></span>
-          <BuildingIcon class="relative z-10 h-4 w-4 text-white" />
-          <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-md"></span>
+            <BuildingIcon class="relative z-10 h-4 w-4 text-white" />
+            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
           </Link>
         </div>
 
@@ -241,7 +240,13 @@
         <button @click="isOpen = !isOpen"
           class="inline-flex items-center justify-center rounded-md p-2 text-foreground dark:text-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 ease-in-out"
           :class="{ 'bg-accent': isOpen }" aria-label="Toggle menu">
-          <Transition mode="out-in">
+          <Transition mode="out-in"
+            enter-active-class="transition-all duration-300 transform"
+            enter-from-class="opacity-0 rotate-90 scale-50"
+            enter-to-class="opacity-100 rotate-0 scale-100"
+            leave-active-class="transition-all duration-300 transform"
+            leave-from-class="opacity-100 rotate-0 scale-100"
+            leave-to-class="opacity-0 rotate-90 scale-50">
             <MenuIcon v-if="!isOpen" key="menu" class="h-6 w-6" />
             <XIcon v-else key="close" class="h-6 w-6" />
           </Transition>
@@ -254,73 +259,47 @@
       enter-to-class="opacity-100 translate-y-0" leave-active-class="transition-all duration-300 ease-in"
       leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-8">
       <div v-if="isOpen" class="container md:hidden py-4 max-h-[80vh] overflow-y-auto scrollbar-thin">
-        <div class="space-y-2">
+        <div class="space-y-2 rounded-lg bg-background/50 backdrop-blur-sm p-2 border border-border/20">
           <!-- Services - Mobile -->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown">
+          <div class="border-b border-border/20 last:border-0 animate-slideDown">
             <button
               class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               @click="handleMobileSectionClick('service-section')">
               <div class="flex items-center">
-                <SettingsIcon class="mr-3 h-5 w-5 transition-transform duration-300" />
-                Services
+                <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                  <SettingsIcon class="h-4 w-4 transition-transform duration-300" />
+                </div>
+                <span>Services</span>
               </div>
             </button>
           </div>
 
           <!-- Solutions - Mobile -->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 50ms;">
+          <div class="border-b border-border/20 last:border-0 animate-slideDown" style="animation-delay: 50ms;">
             <button
               class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               @click="handleMobileSectionClick('portfolio-section')">
               <div class="flex items-center">
-                <LayersIcon class="mr-3 h-5 w-5 transition-transform duration-300" />
-                Solutions
+                <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                  <LayersIcon class="h-4 w-4 transition-transform duration-300" />
+                </div>
+                <span>Solutions</span>
               </div>
             </button>
           </div>
 
-          <!-- Digital Marketing - Mobile -->
-          <!-- <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 100ms;">
-            <button
-              class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
-              @click="toggleMobileSubmenu('Digital Marketing')">
-              <div class="flex items-center">
-                <BarChartIcon class="mr-3 h-5 w-5 transition-transform duration-300"
-                  :class="{ 'rotate-12': mobileActiveSubmenu === 'Digital Marketing' }" />
-                Digital Marketing
-              </div>
-              <ChevronDownIcon class="h-5 w-5 transition-transform duration-300"
-                :class="{ 'rotate-180': mobileActiveSubmenu === 'Digital Marketing' }" />
-            </button>
-
-            <Transition enter-active-class="transition-all duration-500 ease-out" enter-from-class="max-h-0 opacity-0"
-              enter-to-class="max-h-[500px] opacity-100" leave-active-class="transition-all duration-300 ease-in"
-              leave-from-class="max-h-[500px] opacity-100" leave-to-class="max-h-0 opacity-0">
-              <div v-if="mobileActiveSubmenu === 'Digital Marketing'"
-                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2">
-                <div class="py-2 space-y-1 max-h-[300px] overflow-y-auto scrollbar-thin">
-                  <Link v-for="(subItem, subIndex) in getSubItems('Digital Marketing')" :key="subItem.label"
-                    :href="subItem.href || '#'"
-                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6"
-                    :style="{ animationDelay: `${subIndex * 50}ms` }" :class="['animate-fadeIn']">
-                  <component :is="subItem.icon"
-                    class="mr-3 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-                  {{ subItem.label }}
-                  </Link>
-                </div>
-              </div>
-            </Transition>
-          </div> -->
-
           <!-- Company - Mobile -->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 150ms;">
+          <div class="border-b border-border/20 last:border-0 animate-slideDown" style="animation-delay: 150ms;">
             <button
               class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               @click="toggleMobileSubmenu('Company')">
               <div class="flex items-center">
-                <BuildingIcon class="mr-3 h-5 w-5 transition-transform duration-300"
-                  :class="{ 'rotate-12': mobileActiveSubmenu === 'Company' }" />
-                Company
+                <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300"
+                  :class="{ 'bg-primary/10': mobileActiveSubmenu === 'Company' }">
+                  <BuildingIcon class="h-4 w-4 transition-transform duration-300"
+                    :class="{ 'rotate-12': mobileActiveSubmenu === 'Company' }" />
+                </div>
+                <span>Company</span>
               </div>
               <ChevronDownIcon class="h-5 w-5 transition-transform duration-300"
                 :class="{ 'rotate-180': mobileActiveSubmenu === 'Company' }" />
@@ -330,40 +309,34 @@
               enter-to-class="max-h-[500px] opacity-100" leave-active-class="transition-all duration-300 ease-in"
               leave-from-class="max-h-[500px] opacity-100" leave-to-class="max-h-0 opacity-0">
               <div v-if="mobileActiveSubmenu === 'Company'"
-                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2">
+                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2 mx-2">
                 <div class="py-2 space-y-1 max-h-[300px] overflow-y-auto scrollbar-thin">
                   <Link v-for="(subItem, subIndex) in getSubItems('Company')" :key="subItem.label"
                     :href="subItem.href || '#'"
-                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6"
+                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6 group"
                     :style="{ animationDelay: `${subIndex * 50}ms` }" :class="['animate-fadeIn']">
-                  <component :is="subItem.icon"
-                    class="mr-3 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-                  {{ subItem.label }}
+                    <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                      <component :is="subItem.icon" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                    </div>
+                    {{ subItem.label }}
                   </Link>
                 </div>
               </div>
             </Transition>
           </div>
-          <!-- Resources - Mobile -->
-          <!-- <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
-            <button
-              class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
-              @click="handleMobileSectionClick('blog-section')">
-              <div class="flex items-center">
-                <BookOpenIcon class="mr-3 h-5 w-5 transition-transform duration-300" />
-                Resources
-              </div>
-            </button>
-          </div> -->
+
           <!-- Resources dropdown-->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
+          <div class="border-b border-border/20 last:border-0 animate-slideDown" style="animation-delay: 200ms;">
             <button
               class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               @click="toggleMobileSubmenu('Resources')">
               <div class="flex items-center">
-                <BookOpenIcon class="mr-3 h-5 w-5 transition-transform duration-300"
-                  :class="{ 'rotate-12': mobileActiveSubmenu === 'Resources' }" />
-                Resources
+                <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300"
+                  :class="{ 'bg-primary/10': mobileActiveSubmenu === 'Resources' }">
+                  <BookOpenIcon class="h-4 w-4 transition-transform duration-300"
+                    :class="{ 'rotate-12': mobileActiveSubmenu === 'Resources' }" />
+                </div>
+                <span>Resources</span>
               </div>
               <ChevronDownIcon class="h-5 w-5 transition-transform duration-300"
                 :class="{ 'rotate-180': mobileActiveSubmenu === 'Resources' }" />
@@ -373,15 +346,16 @@
               enter-to-class="max-h-[500px] opacity-100" leave-active-class="transition-all duration-300 ease-in"
               leave-from-class="max-h-[500px] opacity-100" leave-to-class="max-h-0 opacity-0">
               <div v-if="mobileActiveSubmenu === 'Resources'"
-                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2">
+                class="overflow-hidden bg-accent/5 dark:bg-accent/10 rounded-md my-2 mx-2">
                 <div class="py-2 space-y-1 max-h-[300px] overflow-y-auto scrollbar-thin">
                   <Link v-for="(subItem, subIndex) in getSubItems('Resources')" :key="subItem.label"
                     :href="subItem.href || '#'"
-                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6"
+                    class="flex w-full items-center rounded-md mx-2 p-3 text-sm hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 dark:hover:text-accent-foreground transition-all duration-300 hover:pl-6 group"
                     :style="{ animationDelay: `${subIndex * 50}ms` }" :class="['animate-fadeIn']">
-                  <component :is="subItem.icon"
-                    class="mr-3 h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-                  {{ subItem.label }}
+                    <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                      <component :is="subItem.icon" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                    </div>
+                    {{ subItem.label }}
                   </Link>
                 </div>
               </div>
@@ -389,20 +363,22 @@
           </div>
 
           <!-- Blog - Mobile -->
-          <div class="border-b border-border/40 last:border-0 animate-slideDown" style="animation-delay: 250ms;">
+          <div class="border-b border-border/20 last:border-0 animate-slideDown" style="animation-delay: 250ms;">
             <Link href="/agency/blog"
-              class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300">
-            <div class="flex items-center">
-              <FileTextIcon class="mr-3 h-5 w-5 transition-transform duration-300" />
-              Blog
-            </div>
+              class="flex w-full items-center justify-between rounded-md p-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-300 group">
+              <div class="flex items-center">
+                <div class="bg-background/80 p-1.5 rounded-md mr-3 transition-all duration-300 group-hover:bg-primary/10">
+                  <FileTextIcon class="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                </div>
+                <span>Blog</span>
+              </div>
             </Link>
           </div>
 
           <!-- Mobile user section -->
-          <div v-if="auth.user" class="px-4 py-3 border-t border-border/40">
+          <div v-if="auth.user" class="px-4 py-3 border-t border-border/20 mt-2">
             <div class="flex items-center gap-3">
-              <div class="relative w-10 h-10 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+              <div class="relative w-10 h-10 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700 border border-border/30">
                 <img v-if="auth.user.avatar" :src="auth.user.avatar" class="object-cover w-full h-full" />
                 <span v-else class="flex items-center justify-center w-full h-full text-sm font-medium">
                   {{ getInitials(auth.user.name) }}
@@ -414,20 +390,26 @@
               </div>
             </div>
             <div class="mt-3 space-y-1">
-              <Link href="/profile" class="block px-2 py-1.5 text-sm rounded hover:bg-accent">Profile</Link>
-              <Link href="/settings" class="block px-2 py-1.5 text-sm rounded hover:bg-accent">Settings</Link>
-              <Link v-if="auth.user.is_admin" href="/admin" class="block px-2 py-1.5 text-sm rounded hover:bg-accent">
-              Admin Panel
+           
+              <Link href="/settings" class="block px-3 py-2 text-sm rounded-md hover:bg-accent flex items-center gap-2">
+                <SettingsIcon class="h-4 w-4" />
+                Settings
+              </Link>
+              <Link v-if="auth.user.is_admin" href="/admin" class="block px-3 py-2 text-sm rounded-md hover:bg-accent flex items-center gap-2">
+                <BuildingIcon class="h-4 w-4" />
+                Admin Panel
               </Link>
               <Link href="/logout" method="post" as="button"
-                class="block w-full px-2 py-1.5 text-sm text-left rounded hover:bg-accent">
-              Sign out
+                class="block w-full px-3 py-2 text-sm text-left rounded-md hover:bg-accent flex items-center gap-2">
+                <LogOutIcon class="h-4 w-4" />
+                Sign out
               </Link>
             </div>
           </div>
-          <div v-else class="px-4 py-3 border-t border-border/40 space-y-2">
-            <Link href="/login" class="block w-full px-2 py-1.5 text-sm rounded hover:bg-accent text-center">
-            Account
+          <div v-else class="px-4 py-3 border-t border-border/20 mt-2 space-y-2">
+            <Link href="/login" class="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-accent">
+              <UserIcon class="h-4 w-4" />
+              Account
             </Link>
           </div>
 
@@ -460,8 +442,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import UserMenuContent from '@/components/UserMenuContent.vue'
-import { UserIcon } from 'lucide-vue-next';
 import {
+  UserIcon,
   CodeIcon,
   MenuIcon,
   XIcon,
@@ -494,7 +476,8 @@ import {
   MousePointerClickIcon,
   LineChartIcon,
   InfoIcon,
-  BriefcaseIcon
+  BriefcaseIcon,
+  LogOutIcon
 } from 'lucide-vue-next'
 
 const page = usePage()
@@ -654,36 +637,23 @@ const navItems = [
       { label: 'Resources', icon: CodeIcon, href: '/our-resources' },
       { label: 'E-books & Articles', icon: FileTextIcon, href: '/books' }
     ]
-
   },
-  // {
-  //   label: 'Digital Marketing',
-  //   icon: BarChartIcon,
-  //   subItems: [
-  //     { label: 'SEO Optimization', icon: SearchIcon, href: '/marketing/seo' },
-  //     { label: 'Content Marketing', icon: FileTextIcon, href: '/marketing/content' },
-  //     { label: 'Social Media Management', icon: UsersIcon, href: '/marketing/social-media' },
-  //     { label: 'PPC Advertising', icon: MousePointerClickIcon, href: '/marketing/ppc' },
-  //     { label: 'Analytics & Reporting', icon: LineChartIcon, href: '/marketing/analytics' }
-  //   ]
-  // },
   {
     label: 'Company',
     icon: BuildingIcon,
     subItems: [
       { label: 'About Us', icon: InfoIcon, href: '/about-us' },
       { label: 'Our Team', icon: UsersIcon, href: '/agency/our-team' },
-      { label: 'Blog', icon: FileTextIcon, href: '/agency/blog' },
-      // { label: 'Careers', icon: BriefcaseIcon, href: '/careers' },
-      // { label: 'Contact', icon: PhoneCallIcon, href: '/contact' }
+      { label: 'Consulting', icon: BriefcaseIcon, href: '/agency/consultation' },
+      { label: 'Privacy Policy', icon: LockIcon, href: '/privacy-policy' },
+      { label: 'Terms of Service', icon: LayoutIcon, href: '/terms-of-service' }
     ]
   }
 ]
 </script>
 
 <style scoped>
-/* Your existing styles */
-/* Add smooth transitions for theme changes */
+/* Base transitions */
 :root {
   --transition-duration: 0.3s;
 }
@@ -743,20 +713,9 @@ const navItems = [
   animation: fadeIn 0.3s ease forwards;
 }
 
-.animation-delay-100 {
-  animation-delay: 100ms;
-}
-
-/* Enhanced spacing for dropdown items */
-.group:hover .group-hover\:rotate-12 {
-  transform: rotate(12deg);
-}
-
 /* Pulse animation for notification dot */
 @keyframes pulse {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -807,7 +766,7 @@ const navItems = [
   color: rgba(255, 255, 255, 0.9);
 }
 
-:root.dark .border-border\/40 {
+:root.dark .border-border\/20 {
   border-color: rgba(255, 255, 255, 0.1);
 }
 

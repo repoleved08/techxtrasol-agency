@@ -1,474 +1,434 @@
 <template>
-  <Head title="Consultation" />
+  <Head title="Free Consultation - TechXtraSol Technology Solutions" />
   <PublicLayout>
-  <div class="min-h-screen bg-background text-foreground">
-    <!-- Hero Section -->
+    <div class="min-h-screen bg-background text-foreground">
 
-    <!-- Service Cards Section -->
-    <section class="py-16 bg-background">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            Our Services
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Select a service to get started with your consultation.
-          </p>
-        </div>
+      <!-- Streamlined Service Selection -->
+      <section class="py-12 sm:py-16 bg-background" aria-labelledby="services-heading">
+        <div class="container mx-auto px-4">
+          <header class="text-center mb-8 sm:mb-12">
+            <h1
+              id="services-heading"
+              class="text-3xl md:text-4xl font-bold mb-4"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+            >
+              Choose Your Service
+            </h1>
+            <p class="text-lg text-muted-foreground max-w-xl mx-auto">
+              Select a service to get started with your free consultation.
+            </p>
+          </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div
-            v-for="(service, index) in serviceCards"
-            :key="index"
-            class="service-card relative overflow-hidden rounded-xl cursor-pointer"
-            :class="{ 'service-card-active': selectedService === service.value }"
-            v-motion
-            :initial="{ opacity: 0, scale: 0.9 }"
-            :visible="{ opacity: 1, scale: 1, transition: { delay: index * 150, duration: 600 } }"
-            @click="selectService(service.value)"
-          >
-            <div class="service-card-glow absolute inset-0 opacity-0 transition-opacity duration-500"></div>
-            <div class="relative z-10 p-8 h-full flex flex-col bg-card rounded-xl border border-border transition-all duration-300 hover:shadow-lg">
-              <div class="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-                <component :is="service.icon" class="w-8 h-8 text-primary" />
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            <article
+              v-for="(service, index) in serviceCards"
+              :key="service.value"
+              class="service-card relative overflow-hidden rounded-xl cursor-pointer group"
+              :class="{ 'service-card-active': selectedService === service.value }"
+              v-motion
+              :initial="{ opacity: 0, scale: 0.95 }"
+              :visible="{ opacity: 1, scale: 1, transition: { delay: index * 100, duration: 500 } }"
+              @click="selectService(service.value)"
+              :aria-label="`Select ${service.title} service`"
+              tabindex="0"
+              @keydown.enter="selectService(service.value)"
+              @keydown.space.prevent="selectService(service.value)"
+            >
+              <div class="service-card-glow absolute inset-0 opacity-0 transition-opacity duration-500" aria-hidden="true"></div>
+              <div class="relative z-10 p-6 h-full flex flex-col bg-card rounded-xl border border-border transition-all duration-300 hover:shadow-lg">
+                <div class="w-12 h-12 mb-4 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <component :is="service.icon" class="w-6 h-6 text-primary" aria-hidden="true" />
+                </div>
+                <h3 class="text-lg font-semibold mb-2">{{ service.title }}</h3>
+                <p class="text-muted-foreground text-sm flex-grow">{{ service.description }}</p>
+                <div class="flex items-center text-primary font-medium text-sm mt-3">
+                  <span>Select Service</span>
+                  <ArrowRight class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </div>
               </div>
-              <h3 class="text-xl font-semibold mb-3">{{ service.title }}</h3>
-              <p class="text-muted-foreground mb-4 flex-grow">{{ service.description }}</p>
-              <div class="flex items-center text-primary font-medium">
-                <span>Learn more</span>
-                <ArrowRight class="w-4 h-4 ml-2" />
-              </div>
-            </div>
+            </article>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Consultation Process Section -->
-    <section id="process" class="py-20 bg-muted/50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            Our Consultation Process
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We've streamlined our consultation process to ensure you get maximum value with minimal hassle.
-          </p>
-        </div>
+      <!-- Simplified Process Section -->
+      <section class="py-12 sm:py-16 bg-muted/30" aria-labelledby="process-heading">
+        <div class="container mx-auto px-4">
+          <header class="text-center mb-8 sm:mb-12">
+            <h2
+              id="process-heading"
+              class="text-2xl md:text-3xl font-bold mb-3"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+            >
+              Simple 3-Step Process
+            </h2>
+            <p class="text-muted-foreground max-w-lg mx-auto">
+              From consultation to project delivery in three streamlined steps.
+            </p>
+          </header>
 
-        <div class="grid md:grid-cols-3 gap-8">
-          <div
-            v-for="(step, index) in consultationSteps"
-            :key="index"
-            class="bg-card p-8 rounded-lg shadow-md relative"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { delay: index * 200, duration: 800 } }"
-          >
-            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-              <component :is="step.icon" class="w-8 h-8 text-primary" />
-            </div>
-            <span class="absolute top-6 right-6 text-6xl font-bold text-muted/20">{{ index + 1 }}</span>
-            <h3 class="text-xl font-semibold mb-3">{{ step.title }}</h3>
-            <p class="text-muted-foreground">{{ step.description }}</p>
+          <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
+            <article
+              v-for="(step, index) in consultationSteps"
+              :key="index"
+              class="bg-card p-6 rounded-lg border border-border relative text-center"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { delay: index * 150, duration: 600 } }"
+            >
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                <component :is="step.icon" class="w-6 h-6 text-primary" aria-hidden="true" />
+              </div>
+              <span class="absolute top-4 right-4 text-3xl font-bold text-muted/20" aria-hidden="true">{{ index + 1 }}</span>
+              <h3 class="text-lg font-semibold mb-2">{{ step.title }}</h3>
+              <p class="text-muted-foreground text-sm">{{ step.description }}</p>
+            </article>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Expertise Section -->
-    <section id="expertise" class="py-20 bg-background">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            Our Expertise
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            TechXtraSol specializes in cutting-edge digital solutions that drive business growth.
-          </p>
-        </div>
+      <!-- Condensed Expertise Section -->
+      <section class="py-12 sm:py-16 bg-background" aria-labelledby="expertise-heading">
+        <div class="container mx-auto px-4">
+          <header class="text-center mb-8 sm:mb-12">
+            <h2
+              id="expertise-heading"
+              class="text-2xl md:text-3xl font-bold mb-3"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+            >
+              Our Expertise
+            </h2>
+            <p class="text-muted-foreground max-w-lg mx-auto">
+              Cutting-edge solutions powered by modern technologies.
+            </p>
+          </header>
 
-        <div class="grid md:grid-cols-2 gap-12">
-          <div
-            v-for="(service, index) in services"
-            :key="index"
-            class="flex gap-6"
-            v-motion
-            :initial="{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }"
-            :visible="{ opacity: 1, x: 0, transition: { delay: index * 200, duration: 800 } }"
-          >
-            <div class="w-16 h-16 bg-primary/10 rounded-full flex-shrink-0 flex items-center justify-center">
-              <component :is="service.icon" class="w-8 h-8 text-primary" />
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold mb-3">{{ service.title }}</h3>
-              <p class="text-muted-foreground mb-4">{{ service.description }}</p>
-              <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="(tech, techIndex) in service.technologies"
-                  :key="techIndex"
-                  class="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded-full"
-                >
-                  {{ tech }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Case Studies Section -->
-    <section class="py-20 bg-card text-card-foreground">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            Success Stories
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See how we've helped businesses like yours achieve their digital goals.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <div
-            v-for="(caseStudy, index) in caseStudies"
-            :key="index"
-            class="bg-card border border-border rounded-lg overflow-hidden"
-            v-motion
-            :initial="{ opacity: 0, scale: 0.9 }"
-            :visible="{ opacity: 1, scale: 1, transition: { delay: index * 200, duration: 800 } }"
-          >
-            <div class="h-48 bg-accent relative">
-              <div class="absolute inset-0 flex items-center justify-center">
-                <component :is="caseStudy.icon" class="w-16 h-16 text-primary/50" />
-              </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold mb-2">{{ caseStudy.title }}</h3>
-              <p class="text-muted-foreground text-sm mb-4">{{ caseStudy.industry }}</p>
-              <p class="text-muted-foreground mb-4">{{ caseStudy.description }}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-primary font-medium">{{ caseStudy.result }}</span>
-                <ArrowUpRight class="w-5 h-5 text-primary" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-20 bg-background">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            What Our Clients Say
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our clients have to say about working with us.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div
-            v-for="(testimonial, index) in testimonials"
-            :key="index"
-            class="bg-card p-8 rounded-lg border border-border"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { delay: index * 200, duration: 800 } }"
-          >
-            <div class="flex items-center mb-6">
-              <div class="w-12 h-12 bg-accent rounded-full mr-4 flex items-center justify-center">
-                <User class="w-6 h-6 text-accent-foreground" />
+          <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+            <article
+              v-for="(service, index) in services"
+              :key="index"
+              class="flex gap-4"
+              v-motion
+              :initial="{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }"
+              :visible="{ opacity: 1, x: 0, transition: { delay: index * 150, duration: 600 } }"
+            >
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex-shrink-0 flex items-center justify-center">
+                <component :is="service.icon" class="w-6 h-6 text-primary" aria-hidden="true" />
               </div>
               <div>
-                <h4 class="font-semibold">{{ testimonial.name }}</h4>
-                <p class="text-sm text-muted-foreground">{{ testimonial.position }}, {{ testimonial.company }}</p>
-              </div>
-            </div>
-            <p class="text-muted-foreground italic mb-4">{{ testimonial.quote }}</p>
-            <div class="flex text-primary">
-              <Star class="w-5 h-5" v-for="i in 5" :key="i" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Booking Section -->
-    <section id="booking" class="py-20 bg-muted/50">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto bg-card rounded-xl shadow-xl overflow-hidden">
-          <div class="md:flex">
-            <div class="md:w-1/2 bg-primary p-12 text-primary-foreground">
-              <div
-                v-motion
-                :initial="{ opacity: 0, x: -50 }"
-                :visible="{ opacity: 1, x: 0, transition: { duration: 800 } }"
-              >
-                <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Digital Presence?</h2>
-                <p class="mb-8">
-                  Schedule a free 30-minute consultation with our experts and discover how we can help you achieve your digital goals.
-                </p>
-                <div class="mb-8">
-                  <div class="flex items-center mb-4">
-                    <Check class="w-5 h-5 mr-3" />
-                    <span>Personalized strategy session</span>
-                  </div>
-                  <div class="flex items-center mb-4">
-                    <Check class="w-5 h-5 mr-3" />
-                    <span>No obligation consultation</span>
-                  </div>
-                  <div class="flex items-center mb-4">
-                    <Check class="w-5 h-5 mr-3" />
-                    <span>Expert advice for your specific needs</span>
-                  </div>
-                  <div class="flex items-center">
-                    <Check class="w-5 h-5 mr-3" />
-                    <span>Clear next steps and action plan</span>
-                  </div>
-                </div>
-                <div class="flex items-center">
-                  <Phone class="w-5 h-5 mr-3" />
-                  <span>Or call us directly: +254714000481</span>
-                </div>
-              </div>
-            </div>
-            <div class="md:w-1/2 p-12">
-              <form
-                @submit.prevent="submitForm"
-                v-motion
-                :initial="{ opacity: 0, x: 50 }"
-                :visible="{ opacity: 1, x: 0, transition: { duration: 800 } }"
-              >
-                <h3 class="text-2xl font-bold mb-6">Book Your Consultation</h3>
-
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-foreground mb-1" for="name">
-                    Full Name
-                  </label>
-                  <input
-                    id="name"
-                    v-model="form.name"
-                    type="text"
-                    class="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                    required
-                  />
-                </div>
-
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-foreground mb-1" for="email">
-                    Email Address
-                  </label>
-                  <input
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                    required
-                  />
-                </div>
-
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-foreground mb-1" for="phone">
-                    Phone Number
-                  </label>
-                  <input
-                    id="phone"
-                    v-model="form.phone"
-                    type="tel"
-                    class="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </div>
-
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-foreground mb-1" for="service">
-                    Service Interest
-                  </label>
-                  <select
-                    id="service"
-                    v-model="form.service"
-                    class="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                    required
+                <h3 class="text-lg font-semibold mb-2">{{ service.title }}</h3>
+                <p class="text-muted-foreground text-sm mb-3">{{ service.description }}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span
+                    v-for="(tech, techIndex) in service.technologies.slice(0, 3)"
+                    :key="techIndex"
+                    class="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-md"
                   >
-                    <option value="" disabled>Select a service</option>
-                    <option v-for="service in serviceCards" :key="service.value" :value="service.value">
-                      {{ service.title }}
-                    </option>
-                    <option value="multiple">Multiple Services</option>
-                  </select>
-                </div>
-
-                <div class="mb-6">
-                  <label class="block text-sm font-medium text-foreground mb-1" for="message">
-                    Tell us about your project
-                  </label>
-                  <textarea
-                    id="message"
-                    v-model="form.message"
-                    rows="4"
-                    class="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  class="w-full px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-all"
-                  :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
-                  :disabled="isSubmitting"
-                  v-motion
-                  :initial="{ scale: 1 }"
-                  :hover="{ scale: 1.02 }"
-                >
-                  <span v-if="isSubmitting">
-                    <Loader2 class="inline w-5 h-5 mr-2 animate-spin" />
-                    Submitting...
+                    {{ tech }}
                   </span>
-                  <span v-else>Schedule Consultation</span>
-                </button>
-
-                <div v-if="formSubmitted" class="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-md">
-                  Thank you! Your consultation request has been submitted. We'll contact you within 24 hours to confirm your appointment.
+                  <span
+                    v-if="service.technologies.length > 3"
+                    class="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-md"
+                  >
+                    +{{ service.technologies.length - 3 }} more
+                  </span>
                 </div>
-              </form>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Streamlined Success Stories -->
+      <section class="py-12 sm:py-16 bg-card" aria-labelledby="success-heading">
+        <div class="container mx-auto px-4">
+          <header class="text-center mb-8 sm:mb-12">
+            <h2
+              id="success-heading"
+              class="text-2xl md:text-3xl font-bold mb-3"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+            >
+              Proven Results
+            </h2>
+            <p class="text-muted-foreground max-w-lg mx-auto">
+              Real outcomes from our client partnerships.
+            </p>
+          </header>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <article
+              v-for="(caseStudy, index) in caseStudies"
+              :key="index"
+              class="bg-background border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+              v-motion
+              :initial="{ opacity: 0, scale: 0.95 }"
+              :visible="{ opacity: 1, scale: 1, transition: { delay: index * 150, duration: 600 } }"
+            >
+              <div class="h-32 bg-accent/50 relative">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <component :is="caseStudy.icon" class="w-10 h-10 text-primary/60" aria-hidden="true" />
+                </div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold mb-1">{{ caseStudy.title }}</h3>
+                <p class="text-muted-foreground text-xs mb-2">{{ caseStudy.industry }}</p>
+                <p class="text-muted-foreground text-sm mb-3">{{ caseStudy.description }}</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-primary font-medium text-sm">{{ caseStudy.result }}</span>
+                  <ArrowUpRight class="w-4 h-4 text-primary" aria-hidden="true" />
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enhanced Booking Section (Form Logic Preserved) -->
+      <section id="booking" class="py-12 sm:py-16 bg-muted/30" aria-labelledby="booking-heading">
+        <div class="container mx-auto px-4">
+          <div class="max-w-4xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden">
+            <div class="md:flex">
+              <div class="md:w-2/5 bg-primary p-8 lg:p-10 text-primary-foreground">
+                <div
+                  v-motion
+                  :initial="{ opacity: 0, x: -30 }"
+                  :visible="{ opacity: 1, x: 0, transition: { duration: 600 } }"
+                >
+                  <h2 id="booking-heading" class="text-2xl lg:text-3xl font-bold mb-4">Ready to Get Started?</h2>
+                  <p class="mb-6 text-primary-foreground/90">
+                    Schedule your free 30-minute consultation and discover how we can help achieve your goals.
+                  </p>
+                  <div class="space-y-3 mb-6">
+                    <div class="flex items-center text-sm">
+                      <Check class="w-4 h-4 mr-3 flex-shrink-0" aria-hidden="true" />
+                      <span>Free strategy session</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <Check class="w-4 h-4 mr-3 flex-shrink-0" aria-hidden="true" />
+                      <span>No obligation consultation</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <Check class="w-4 h-4 mr-3 flex-shrink-0" aria-hidden="true" />
+                      <span>Clear action plan</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center text-sm">
+                    <Phone class="w-4 h-4 mr-3 flex-shrink-0" aria-hidden="true" />
+                    <span>Call: +254714000481</span>
+                  </div>
+                </div>
+              </div>
+              <div class="md:w-3/5 p-8 lg:p-10">
+                <form
+                  @submit.prevent="submitForm"
+                  v-motion
+                  :initial="{ opacity: 0, x: 30 }"
+                  :visible="{ opacity: 1, x: 0, transition: { duration: 600 } }"
+                  novalidate
+                >
+                  <h3 class="text-xl font-bold mb-6">Book Your Consultation</h3>
+
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium mb-1" for="name">
+                        Full Name *
+                      </label>
+                      <input
+                        id="name"
+                        v-model="form.name"
+                        type="text"
+                        class="w-full px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        required
+                        aria-describedby="name-error"
+                      />
+                      <div v-if="form.errors.name" id="name-error" class="text-destructive text-sm mt-1">{{ form.errors.name }}</div>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" for="email">
+                        Email Address *
+                      </label>
+                      <input
+                        id="email"
+                        v-model="form.email"
+                        type="email"
+                        class="w-full px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        required
+                        aria-describedby="email-error"
+                      />
+                      <div v-if="form.errors.email" id="email-error" class="text-destructive text-sm mt-1">{{ form.errors.email }}</div>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" for="phone">
+                        Phone Number
+                      </label>
+                      <input
+                        id="phone"
+                        v-model="form.phone"
+                        type="tel"
+                        class="w-full px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        aria-describedby="phone-error"
+                      />
+                      <div v-if="form.errors.phone" id="phone-error" class="text-destructive text-sm mt-1">{{ form.errors.phone }}</div>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" for="service">
+                        Service Interest *
+                      </label>
+                      <select
+                        id="service"
+                        v-model="form.service"
+                        class="w-full px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        required
+                        aria-describedby="service-error"
+                      >
+                        <option value="" disabled>Select a service</option>
+                        <option v-for="service in serviceCards" :key="service.value" :value="service.value">
+                          {{ service.title }}
+                        </option>
+                        <option value="multiple">Multiple Services</option>
+                      </select>
+                      <div v-if="form.errors.service" id="service-error" class="text-destructive text-sm mt-1">{{ form.errors.service }}</div>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" for="message">
+                        Project Details
+                      </label>
+                      <textarea
+                        id="message"
+                        v-model="form.message"
+                        rows="3"
+                        class="w-full px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-vertical"
+                        placeholder="Tell us about your project goals and requirements..."
+                        aria-describedby="message-error"
+                      ></textarea>
+                      <div v-if="form.errors.message" id="message-error" class="text-destructive text-sm mt-1">{{ form.errors.message }}</div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="w-full mt-6 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
+                    :disabled="isSubmitting"
+                    v-motion
+                    :initial="{ scale: 1 }"
+                    :hover="{ scale: 1.02 }"
+                  >
+                    <span v-if="isSubmitting" class="flex items-center justify-center">
+                      <Loader2 class="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
+                      Submitting...
+                    </span>
+                    <span v-else>Schedule Free Consultation</span>
+                  </button>
+
+                  <div v-if="formSubmitted" class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-md border border-green-200 dark:border-green-800">
+                    <div class="flex items-center">
+                      <Check class="w-5 h-5 mr-2 flex-shrink-0" aria-hidden="true" />
+                      <span class="text-sm">Thank you! We'll contact you within 24 hours to confirm your appointment.</span>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- FAQ Section -->
-    <section class="py-20 bg-background">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2
-            class="text-3xl md:text-4xl font-bold mb-4"
-            v-motion
-            :initial="{ opacity: 0, y: 50 }"
-            :visible="{ opacity: 1, y: 0, transition: { duration: 800 } }"
-          >
-            Frequently Asked Questions
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have questions? We've got answers.
-          </p>
-        </div>
-
-        <div class="max-w-3xl mx-auto">
-          <div
-            v-for="(faq, index) in faqs"
-            :key="index"
-            class="mb-4 border border-border rounded-lg overflow-hidden"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :visible="{ opacity: 1, y: 0, transition: { delay: index * 100, duration: 500 } }"
-          >
-            <button
-              class="w-full px-6 py-4 text-left bg-card hover:bg-accent flex justify-between items-center"
-              @click="toggleFaq(index)"
+      <!-- Simplified FAQ Section -->
+      <section class="py-12 sm:py-16 bg-background" aria-labelledby="faq-heading">
+        <div class="container mx-auto px-4">
+          <header class="text-center mb-8 sm:mb-12">
+            <h2
+              id="faq-heading"
+              class="text-2xl md:text-3xl font-bold mb-3"
+              v-motion
+              :initial="{ opacity: 0, y: 30 }"
+              :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
             >
-              <span class="font-medium">{{ faq.question }}</span>
-              <ChevronDown
-                class="w-5 h-5 text-muted-foreground transition-transform"
-                :class="{ 'transform rotate-180': faq.isOpen }"
-              />
-            </button>
+              Common Questions
+            </h2>
+            <p class="text-muted-foreground max-w-lg mx-auto">
+              Quick answers to help you get started.
+            </p>
+          </header>
+
+          <div class="max-w-2xl mx-auto">
             <div
-              v-if="faq.isOpen"
-              class="px-6 py-4 bg-accent/50 text-accent-foreground"
+              v-for="(faq, index) in faqs"
+              :key="index"
+              class="mb-3 border border-border rounded-lg overflow-hidden"
+              v-motion
+              :initial="{ opacity: 0, y: 20 }"
+              :visible="{ opacity: 1, y: 0, transition: { delay: index * 80, duration: 400 } }"
             >
-              <p>{{ faq.answer }}</p>
+              <button
+                class="w-full px-4 py-3 text-left bg-card hover:bg-accent flex justify-between items-center transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
+                @click="toggleFaq(index)"
+                :aria-expanded="faq.isOpen"
+                :aria-controls="`faq-answer-${index}`"
+              >
+                <span class="font-medium text-sm">{{ faq.question }}</span>
+                <ChevronDown
+                  class="w-4 h-4 text-muted-foreground transition-transform flex-shrink-0 ml-2"
+                  :class="{ 'transform rotate-180': faq.isOpen }"
+                  aria-hidden="true"
+                />
+              </button>
+              <div
+                v-if="faq.isOpen"
+                :id="`faq-answer-${index}`"
+                class="px-4 py-3 bg-accent/30 text-accent-foreground"
+              >
+                <p class="text-sm">{{ faq.answer }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-     <!-- Newsletter Subscription -->
-     <Newsletter class="mt-16 md:mt-24"/>
-  </div>
-</PublicLayout>
+      <!-- Newsletter Subscription -->
+      <Newsletter class="mt-8 mx-5 mb-8 md:mt-12"/>
+    </div>
+  </PublicLayout>
 </template>
 
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3'
 import Newsletter from './Newsletter.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import { useMotion } from '@vueuse/motion'
-import { router } from '@inertiajs/vue3'
 import {
   ArrowRight,
   ArrowUpRight,
   Check,
   ChevronDown,
-  Facebook,
-  Instagram,
-  Linkedin,
   Loader2,
   MessageSquare,
   Phone,
-  Star,
-  Twitter,
-  User,
   Code,
   Database,
   Share2,
   Cpu,
   Lightbulb,
   FileCheck,
-  Users,
   Smartphone
 } from 'lucide-vue-next'
 
-// Track dark mode for conditional styling
-const isDarkMode = ref(false)
-
-// Check for dark mode on mount and set up listener
-onMounted(() => {
-  checkDarkMode()
-  // Listen for changes to color scheme
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  mediaQuery.addEventListener('change', checkDarkMode)
-})
-
-// Check if dark mode is active
-const checkDarkMode = () => {
-  // Check if .dark class exists on html or if user prefers dark mode
-  const isDark = document.documentElement.classList.contains('dark') ||
-                 window.matchMedia('(prefers-color-scheme: dark)').matches
-  isDarkMode.value = isDark
-}
-
-// Form state
+// Form state (preserving original logic)
 const form = useForm({
   name: '',
   email: '',
@@ -479,167 +439,138 @@ const form = useForm({
 
 const isSubmitting = ref(false)
 const formSubmitted = ref(false)
+const selectedService = ref('')
 
-// Consultation steps data
+// Streamlined consultation steps
 const consultationSteps = [
   {
     icon: MessageSquare,
-    title: 'Initial Consultation',
-    description: 'We start with a free 30-minute call to understand your business goals and challenges.'
+    title: 'Free Consultation',
+    description: '30-minute call to understand your goals and challenges.'
   },
   {
     icon: Lightbulb,
-    title: 'Strategy Development',
-    description: 'Our team develops a tailored strategy and proposal based on your specific needs and objectives.'
+    title: 'Custom Strategy',
+    description: 'Tailored proposal based on your specific needs.'
   },
   {
     icon: FileCheck,
-    title: 'Project Kickoff',
-    description: 'Once approved, we schedule a kickoff meeting to align on timelines, deliverables, and communication.'
+    title: 'Project Launch',
+    description: 'Kickoff meeting with clear timelines and deliverables.'
   }
 ]
 
-// Services data
+// Condensed services data
 const services = [
   {
     icon: Code,
     title: 'Web Development',
-    description: 'We build responsive, high-performance websites and web applications that deliver exceptional user experiences.',
+    description: 'High-performance websites and applications that deliver results.',
     technologies: ['React', 'Vue', 'Next.js', 'Node.js', 'TypeScript']
   },
   {
     icon: Database,
-    title: 'System Design',
-    description: 'Our team designs scalable, efficient systems architecture that supports your business operations and growth.',
+    title: 'System Architecture',
+    description: 'Scalable systems that support growth and efficiency.',
     technologies: ['AWS', 'Azure', 'Docker', 'Kubernetes', 'Microservices']
   },
   {
     icon: Share2,
-    title: 'Social Media Management',
-    description: 'We create and execute social media strategies that build brand awareness and drive engagement.',
-    technologies: ['Content Strategy', 'Analytics', 'Campaign Management', 'Community Building']
+    title: 'Digital Marketing',
+    description: 'Strategic campaigns that build awareness and drive engagement.',
+    technologies: ['SEO', 'Content Strategy', 'Analytics', 'Social Media']
   },
   {
     icon: Cpu,
-    title: 'AI Integration',
-    description: 'Leverage the power of artificial intelligence to automate processes and gain valuable insights.',
-    technologies: ['Machine Learning', 'Natural Language Processing', 'Computer Vision', 'Predictive Analytics']
+    title: 'AI Solutions',
+    description: 'Intelligent automation for process optimization.',
+    technologies: ['Machine Learning', 'NLP', 'Computer Vision', 'Analytics']
   }
 ]
 
-// Service cards data
+// Streamlined service cards
 const serviceCards = [
   {
     icon: Code,
     title: 'Web Development',
     value: 'web-development',
-    description: 'Custom websites and web applications built with modern technologies.'
+    description: 'Modern websites and applications built for performance.'
   },
   {
     icon: Smartphone,
-    title: 'App Development',
+    title: 'Mobile Apps',
     value: 'app-development',
-    description: 'Native and cross-platform mobile applications for iOS and Android.'
+    description: 'Native and cross-platform mobile solutions.'
   },
   {
     icon: Cpu,
     title: 'AI Integration',
     value: 'ai-integration',
-    description: 'Leverage artificial intelligence to automate processes and gain insights.'
+    description: 'Smart automation and intelligent insights.'
   },
   {
     icon: Share2,
-    title: 'Social Media',
+    title: 'Digital Marketing',
     value: 'social-media',
-    description: 'Strategic social media management to build brand awareness and engagement.'
+    description: 'Strategic growth through digital channels.'
   }
 ]
 
-const selectedService = ref('')
-
-// Case studies data
+// Condensed case studies
 const caseStudies = [
   {
     icon: Database,
-    title: 'E-commerce Platform Overhaul',
+    title: 'E-commerce Transformation',
     industry: 'Retail',
-    description: 'Redesigned and rebuilt an outdated e-commerce platform, resulting in improved performance and user experience.',
-    result: '156% increase in conversions'
+    description: 'Complete platform rebuild with improved performance.',
+    result: '156% conversion increase'
   },
   {
     icon: Cpu,
-    title: 'AI-Powered Customer Service',
-    industry: 'Financial Services',
-    description: 'Implemented an AI chatbot solution to handle customer inquiries, reducing wait times and improving satisfaction.',
-    result: '72% reduction in response time'
+    title: 'AI Customer Service',
+    industry: 'Finance',
+    description: 'Automated support system reducing response times.',
+    result: '72% faster responses'
   },
   {
     icon: Share2,
-    title: 'Social Media Growth Campaign',
+    title: 'Brand Growth Campaign',
     industry: 'Hospitality',
-    description: 'Developed and executed a comprehensive social media strategy for a boutique hotel chain.',
-    result: '3x follower growth in 6 months'
+    description: 'Comprehensive social media strategy execution.',
+    result: '3x follower growth'
   }
 ]
 
-// Testimonials data
-const testimonials = [
-  {
-    name: 'Sarah Johnson',
-    position: 'Marketing Director',
-    company: 'GrowthTech',
-    quote: 'TechXtraSol transformed our digital presence completely. Their team was professional, responsive, and delivered beyond our expectations. The new website has significantly increased our lead generation.'
-  },
-  {
-    name: 'Michael Chen',
-    position: 'CEO',
-    company: 'InnovateCorp',
-    quote: 'Working with TechXtraSol on our AI integration project was a game-changer for our business. Their expertise and attention to detail made the process smooth and the results have been outstanding.'
-  },
-  {
-    name: 'Jessica Williams',
-    position: 'Operations Manager',
-    company: 'Streamline Solutions',
-    quote: 'The system design work that TechXtraSol did for us has completely transformed our internal processes. We\'re now able to handle 3x the workload with the same team size.'
-  },
-  {
-    name: 'David Rodriguez',
-    position: 'Digital Strategist',
-    company: 'Brand Elevate',
-    quote: 'Their social media management services have been instrumental in growing our brand presence. The team is creative, data-driven, and consistently delivers results.'
-  }
-]
-
-// FAQ data
+// Simplified FAQ data
 const faqs = reactive([
   {
-    question: 'How long does the consultation process take?',
-    answer: 'Our initial consultation is a 30-minute call. Following that, we typically deliver a proposal within 2-3 business days, depending on the complexity of your project.',
+    question: 'How long is the consultation?',
+    answer: 'Our initial consultation is 30 minutes, with a proposal delivered within 2-3 business days.',
     isOpen: false
   },
   {
-    question: 'Do you offer ongoing support after project completion?',
-    answer: 'Yes, we offer various support and maintenance packages to ensure your digital assets continue to perform optimally after launch. We can customize a support plan based on your specific needs.',
+    question: 'Do you provide ongoing support?',
+    answer: 'Yes, we offer customized support and maintenance packages for all projects.',
     isOpen: false
   },
   {
-    question: 'What is your pricing structure?',
-    answer: 'Our pricing varies based on project scope, complexity, and timeline. During the consultation, we\'ll discuss your budget and provide transparent pricing options in our proposal.',
+    question: 'What are your pricing options?',
+    answer: 'Pricing varies by project scope. We provide transparent pricing in our proposal after consultation.',
     isOpen: false
   },
   {
-    question: 'How do you handle project revisions?',
-    answer: 'We include a specific number of revision rounds in each project proposal. Our collaborative approach ensures we capture your feedback early and often to minimize the need for major revisions.',
+    question: 'How do revisions work?',
+    answer: 'Each project includes specific revision rounds. Our collaborative approach minimizes major changes.',
     isOpen: false
   },
   {
-    question: 'Can you work with our existing systems and tools?',
-    answer: 'Absolutely. We have experience integrating with a wide range of existing systems and tools. During our consultation, we\'ll discuss your current tech stack and how we can best work with or enhance it.',
+    question: 'Can you integrate with existing systems?',
+    answer: 'Absolutely. We have extensive experience working with various existing systems and tools.',
     isOpen: false
   }
 ])
 
-// Methods
+// Methods (preserving original form logic)
 const toggleFaq = (index: number) => {
   faqs[index].isOpen = !faqs[index].isOpen
 }
@@ -660,7 +591,6 @@ const submitForm = () => {
     onSuccess: () => {
       isSubmitting.value = false
       formSubmitted.value = true
-
 
       // Reset form
       form.name = ''
@@ -689,7 +619,7 @@ const selectService = (service: string) => {
 
 <style scoped>
 .service-card {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .service-card:hover .service-card-glow,
@@ -700,23 +630,42 @@ const selectService = (service: string) => {
 .service-card-glow {
   background: radial-gradient(
     circle at center,
-    rgba(var(--primary), 0.3) 0%,
-    rgba(var(--primary), 0) 70%
+    hsl(var(--primary) / 0.2) 0%,
+    transparent 70%
   );
   filter: blur(20px);
 }
 
 .service-card-active {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 .service-card-active > div {
-  border-color: rgba(var(--primary), 0.5);
-  box-shadow: 0 10px 25px -5px rgba(var(--primary), 0.1);
+  border-color: hsl(var(--primary) / 0.5);
+  box-shadow: 0 8px 25px -5px hsl(var(--primary) / 0.1);
 }
 
-/* Fix for primary CSS variable usage in radial gradient */
-:root {
-  --primary: 346.8 77.2% 49.8%;
+/* Enhanced focus styles for accessibility */
+.service-card:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Performance optimizations */
+.service-card:hover {
+  will-change: transform;
+}
+
+.service-card:not(:hover) {
+  will-change: auto;
 }
 </style>

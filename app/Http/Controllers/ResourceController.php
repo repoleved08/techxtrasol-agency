@@ -12,39 +12,40 @@ class ResourceController extends Controller
 {
     public function index(Request $request)
     {
+        // Validate and sanitize inputs
+        $validated = $request->validate([
+            'category' => 'nullable|string|max:255',
+            'search' => 'nullable|string|max:255',
+            'page' => 'nullable|integer|min:1'
+        ]);
+
         $query = Resource::query()
             ->with(['category', 'user'])
-            ->when($request->input('category'), function ($query, $category) {
+            ->when($validated['category'] ?? null, function ($query, $category) {
                 $query->whereHas('category', fn($q) => $q->where('slug', $category));
             })
-            ->when($request->input('search'), function ($query, $search) {
+            ->when($validated['search'] ?? null, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")
-                      ->orWhere('excerpt', 'like', "%{$search}%")
-                      ->orWhere('body', 'like', "%{$search}%");
+                        ->orWhere('excerpt', 'like', "%{$search}%")
+                        ->orWhere('body', 'like', "%{$search}%");
                 });
             });
 
-        // Check if the published scope exists
+        // Apply published scope
         if (method_exists(Resource::class, 'scopePublished')) {
             $query->published();
         } else {
             $query->where('is_published', true)
-                  ->where('published_at', '<=', now());
+                ->where('published_at', '<=', now());
         }
 
         $resources = $query->latest('published_at')
             ->paginate(12)
             ->withQueryString();
 
-        // Prepare meta data for the resources index page
-        $meta = [
-            'title' => 'Resources | TechXtraSol',
-            'description' => 'Browse our collection of valuable resources, guides, and tools to help you succeed.',
-            'image' => asset('images/resources-default-og.jpg'),
-            'url' => url()->current(),
-            'type' => 'website',
-        ];
+        // Build dynamic meta data based on filters
+        $meta = $this->buildMetaData($validated);
 
         return Inertia::render('Resources/Index', [
             'resources' => $resources,
@@ -52,6 +53,45 @@ class ResourceController extends Controller
             'filters' => $request->only(['category', 'search']),
             'meta' => $meta,
         ]);
+    }
+
+    private function buildMetaData(array $filters): array
+    {
+        $title = 'Resources | TechXtraSol';
+        $description = 'Browse our collection of valuable resources, guides, and tools to help you succeed.';
+
+        // Customize meta based on active filters
+        if (!empty($filters['category'])) {
+            $category = ResourceCategory::where('slug', $filters['category'])->first();
+            if ($category) {
+                $title = "{$category->name} Resources | TechXtraSol";
+                $description = "Explore our {$category->name} resources, guides, and insights.";
+            }
+        }
+
+        if (!empty($filters['search'])) {
+            $searchTerm = Str::limit($filters['search'], 50);
+            $title = "Search: {$searchTerm} | Resources | TechXtraSol";
+            $description = "Search results for '{$searchTerm}' in our resource library.";
+        }
+
+        if (!empty($filters['category']) && !empty($filters['search'])) {
+            $category = ResourceCategory::where('slug', $filters['category'])->first();
+            $searchTerm = Str::limit($filters['search'], 50);
+            if ($category) {
+                $title = "Search: {$searchTerm} in {$category->name} | TechXtraSol";
+                $description = "Search results for '{$searchTerm}' in {$category->name} resources.";
+            }
+        }
+
+        return [
+            'title' => $title,
+            'description' => $description,
+            'image' => asset('images/resources-default-og.jpg'),
+            'url' => url()->current(),
+            'type' => 'website',
+            'canonical' => url()->current(),
+        ];
     }
 
     public function show(Request $request, $slug)
